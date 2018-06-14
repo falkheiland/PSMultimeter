@@ -11,20 +11,21 @@ function Get-MultimeterIpStatistics
     Ip-Address or Hostname  of the Allegro Multimeter
     
     .PARAMETER Credential
-    Credetials for the Allegro Multimeter
+    Credentials for the Allegro Multimeter
     
     .EXAMPLE
-    Get-MultimeterIpStatistics -Hostname '10.11.11.35'
+    Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3'
     Gets all IP-Statistics from Allegro Multimeter
 
     .EXAMPLE
-    Get-MultimeterIpStatistics -Hostname '10.11.11.35' -Count 1 -Reverse
+    Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -Count 1 -Reverse
 
     .EXAMPLE
-    Get-MultimeterIpStatistics -Hostname '10.11.11.35' -IPAddress '10.11.11.1'
+    Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '10.11.11.1'
 
     .EXAMPLE
-    ((Get-MultimeterIpStatistics -Hostname '10.11.11.35' | Select-Object -First 1).displayedItems).ip
+    $Credential = (Get-Credential -Message 'Enter your credentials')
+    ((Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential | Select-Object -First 1).displayedItems).ip
 
     .NOTES
     General notes
@@ -41,19 +42,47 @@ function Get-MultimeterIpStatistics
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
         [Parameter(ParameterSetName = 'IPAddress')]
+        [Parameter(ParameterSetName = 'IPAddressProtocols')]
+        [Parameter(ParameterSetName = 'IPAddressPeers')]
+        [Parameter(ParameterSetName = 'IPAddressConnections')]
+        [Parameter(ParameterSetName = 'IPAddressPorts')]
         [ValidateScript( {$_ -match [IPAddress]$_})]
         [string]
         $IPAddress,
         
         [string]
+        [Parameter(ParameterSetName = 'IPAddresses')]
+        [Parameter(ParameterSetName = 'IPAddressPeers')]
+        [Parameter(ParameterSetName = 'IPAddressConnections')]
         [ValidateSet('bps', 'pps', 'bytes', 'packets')]
-        $SortBy = 'bps',
+        $SortBy = 'bytes',
 
         [Parameter(ParameterSetName = 'IPAddresses')]
+        [Parameter(ParameterSetName = 'IPAddressPeers')]
+        [Parameter(ParameterSetName = 'IPAddressConnections')]
         [switch]
         $Reverse,
 
+        [Parameter(ParameterSetName = 'IPAddressProtocols')]
+        [switch]
+        $Protocols,
+
+        [Parameter(ParameterSetName = 'IPAddressPeers')]
+        [switch]
+        $Peers,
+
+        [Parameter(ParameterSetName = 'IPAddressConnections')]
+        [switch]
+        $Connections,
+
+        [Parameter(ParameterSetName = 'IPAddressPorts')]
+        [switch]
+        $Ports,
+
         [Parameter(ParameterSetName = 'IPAddresses')]
+        [Parameter(ParameterSetName = 'IPAddressProtocols')]
+        [Parameter(ParameterSetName = 'IPAddressPeers')]
+        [Parameter(ParameterSetName = 'IPAddressConnections')]
         [int]
         $Count = 10,
 
@@ -113,6 +142,24 @@ function Get-MultimeterIpStatistics
             IPAddress
             {
                 $SessionURL = ('{0}/ips/{1}?timespan={2}&values={3}' -f $BaseURL, $IPAddress, $Timespan, $Values)
+            }
+            IPAddressProtocols
+            {
+                $SessionURL = ('{0}/ips/{1}/protocols?timespan={2}&values={3}' -f $BaseURL, $IPAddress, $Timespan, $Values)
+            }
+            IPAddressPeers
+            {
+                $SessionURL = ('{0}/ips/{1}/peers?sort={2}&reverse={3}&page=0&count={4}&timespan={5}&values={6}' -f $BaseURL, 
+                    $IPAddress, $SortBy, $ReverseString, $Count, $Timespan, $Values)
+            }
+            IPAddressConnections
+            {
+                $SessionURL = ('{0}/ips/{1}/connections?sort={2}&reverse={3}&page=0&count={4}&timespan={5}&values={6}' -f $BaseURL, 
+                    $IPAddress, $SortBy, $ReverseString, $Count, $Timespan, $Values)
+            }
+            IPAddressPorts
+            {
+                $SessionURL = ('{0}/ips/{1}/ports?timespan={2}&values={3}' -f $BaseURL, $IPAddress, $Timespan, $Values)
             }
         }
 
