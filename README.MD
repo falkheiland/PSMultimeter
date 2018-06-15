@@ -133,8 +133,8 @@ $Credential = Get-Credential -Message 'Enter your credentials'
 Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
-**Gets time from Allegro Multimeter and converts it to .net Time:**
+**Gets time from Allegro Multimeter and converts it to .NET Time (DateTime-Format):**
 
 ```powershell
-[timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds([math]::Round(((Get-MultimeterTime -Hostname 'allegro-mm-6cb2').currentTime)/1000)))
+Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
 ```

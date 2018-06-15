@@ -19,8 +19,8 @@ function Get-MultimeterTime
     #Asks for credentail then gets time from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    [timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds([math]::Round(((Get-MultimeterTime -Hostname 'allegro-mm-6cb2').currentTime)/1000)))
-    #Gets time from Allegro Multimeter and converts it to .net Time
+    Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
+    #Gets time from Allegro Multimeter and converts it to .NET Time (DateTime-Format)
 
     .NOTES
     n.a.
@@ -36,7 +36,10 @@ function Get-MultimeterTime
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
-        $Credential = (Get-Credential -Message 'Enter your credentials')
+        $Credential = (Get-Credential -Message 'Enter your credentials'),
+
+        [switch]
+        $DateTime
     )
     
     begin
@@ -76,7 +79,18 @@ function Get-MultimeterTime
             ContentType = 'application/json; charset=utf-8'
             Method      = 'Get'
         }
-        Invoke-RestMethod @Params
+        $MultimeterTime = Invoke-RestMethod @Params
+        switch ($DateTime)
+        {
+            $false
+            {  
+                $MultimeterTime.currentTime
+            }
+            $true
+            {
+                [timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds([math]::Round(($MultimeterTime.currentTime) / 1000)))
+            }
+        }
     }
     
     end
