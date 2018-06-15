@@ -6,6 +6,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
 * [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
+* [Get-MultimeterTime](#get-multimetertime)
 
 ### Get-MultimeterIpStatistics
 
@@ -119,4 +120,21 @@ Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -Sor
 
 ```powershell
 Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
+```
+
+### Get-MultimeterTime
+
+Get current time of the Allegro Multimeter
+
+**Asks for credentail then gets time from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets time from Allegro Multimeter and converts it to .net Time:**
+
+```powershell
+[timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds([math]::Round(((Get-MultimeterTime -Hostname 'allegro-mm-6cb2').currentTime)/1000)))
 ```
