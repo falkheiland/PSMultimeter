@@ -22,9 +22,6 @@ function Get-MultimeterIpStatistics
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
 
-    .PARAMETER IPAdress
-    IPAdress to get statistics from
-
     .PARAMETER Overview
     Switch to get statistics for IPAdress
 
@@ -63,6 +60,10 @@ function Get-MultimeterIpStatistics
     .EXAMPLE
     Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
     #Gets IP-Statistics for the IP Address with the most Bytes in the last 1 hour
+
+    .EXAMPLE
+    Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Page 0 -Count 1 -Reverse -Location 'DE'
+    #Gets IP-Statistics for the IP Address with the most Bytes in the last 1 hour from Location Germany
 
     .EXAMPLE
     Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -IPAddress '192.168.0.1' -Overview
@@ -133,12 +134,14 @@ function Get-MultimeterIpStatistics
         
         [string]
         [Parameter(ParameterSetName = 'IPAddresses')]
+        [Parameter(ParameterSetName = 'IPAddressesLocation')]
         [Parameter(ParameterSetName = 'IPAddressPeers')]
         [Parameter(ParameterSetName = 'IPAddressConnections')]
         [ValidateSet('bps', 'pps', 'bytes', 'packets')]
         $SortBy = 'bytes',
 
         [Parameter(ParameterSetName = 'IPAddresses')]
+        [Parameter(ParameterSetName = 'IPAddressesLocation')]
         [Parameter(ParameterSetName = 'IPAddressPeers')]
         [Parameter(ParameterSetName = 'IPAddressConnections')]
         [switch]
@@ -169,6 +172,7 @@ function Get-MultimeterIpStatistics
         $Global,
 
         [Parameter(ParameterSetName = 'IPAddresses')]
+        [Parameter(ParameterSetName = 'IPAddressesLocation')]
         [Parameter(ParameterSetName = 'IPAddressProtocols')]
         [Parameter(ParameterSetName = 'IPAddressPeers')]
         [Parameter(ParameterSetName = 'IPAddressConnections')]
@@ -176,11 +180,16 @@ function Get-MultimeterIpStatistics
         $Page = 0,
 
         [Parameter(ParameterSetName = 'IPAddresses')]
+        [Parameter(ParameterSetName = 'IPAddressesLocation')]
         [Parameter(ParameterSetName = 'IPAddressProtocols')]
         [Parameter(ParameterSetName = 'IPAddressPeers')]
         [Parameter(ParameterSetName = 'IPAddressConnections')]
         [int]
         $Count = 5,
+
+        [Parameter(ParameterSetName = 'IPAddressesLocation')]
+        [string]
+        $Location,
 
         [int]
         $Timespan = 1,
@@ -234,6 +243,12 @@ function Get-MultimeterIpStatistics
             {  
                 $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL, 
                     $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
+            }
+            IPAddressesLocation
+            {  
+                $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&countryfilter={5}&timespan={6}&values={7}' -f $BaseURL, 
+                    $SortBy, $ReverseString, $Page, $Count, $Location, $Timespan, $Values)
+                $SessionURL
             }
             IPAddress
             {
