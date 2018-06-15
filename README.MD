@@ -5,8 +5,11 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 ## Functions
 
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
+* [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
 
 ### Get-MultimeterIpStatistics
+
+Get IP statistics
 
 **Asks for credentail then gets IP-Statistics from Allegro Multimeter using provided credential:**
 
@@ -19,6 +22,12 @@ Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ```powershell
 Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+```
+
+**Gets IP-Statistics for the IP Address with the most Bytes in the last 1 hour from Location Germany:**
+
+```powershell
+Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Page 0 -Count 1 -Reverse -Location 'DE'
 ```
 
 **Gets overview of IP-Statistics for IP Address '192.168.0.1':**
@@ -81,4 +90,33 @@ Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Global
 ```powershell
 $Stats = (Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Global).tcpStats
 'Retransmissions: {0}%' -f [math]::Round(($Stats.globalRetransmissionBytes*100/$Stats.globalTotalBytes),3)
+```
+
+### Get-MultimeterLocationStatistics
+
+Get Location Statistics
+
+**Asks for credentail then gets Location-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets Code for the 10 Locations with most Bytes:**
+
+```powershell
+(Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -SortBy bytes -Page 0 -Count 10 -Reverse).displayedItems.code
+```
+
+**Gets Location-Statistics for the Location with the most Bytes in the last 1 hour:**
+
+```powershell
+Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+```
+
+**Gets overview of Location-Statistics for Location 'DE':**
+
+```powershell
+Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
 ```
