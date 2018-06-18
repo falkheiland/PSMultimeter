@@ -5,6 +5,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 ## Functions
 
 * [Get-MultimeterDisk](#get-multimeterdisk)
+* [Get-MultimeterInterfaceStatistics](#get-multimeterinterfacestatistics)
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
 * [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
 * [Get-MultimeterStorage](#get-multimeterstorage)
@@ -25,6 +26,23 @@ Get-MultimeterDisk -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ```powershell
 (Get-MultimeterDisk -Hostname 'allegro-mm-6cb2').where{$_.transport -eq 'usb'}
+```
+
+### Get-MultimeterInterfaceStatistics
+
+Get interface statistics
+
+**Asks for credentail then interface statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get interface statistics from Allegro Multimeter for interfaces that are connected:**
+
+```powershell
+((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
 ```
 
 ### Get-MultimeterIpStatistics
