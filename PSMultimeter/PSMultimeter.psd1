@@ -72,6 +72,7 @@
     FunctionsToExport = @(
         Get-MultimeterIpStatistics
         Get-MultimeterLocationStatistics
+        Get-MultimeterStorage
         Get-MultimeterTime
     )
 

@@ -6,7 +6,9 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
 * [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
+* [Get-MultimeterStorage](#get-multimeterstorage)
 * [Get-MultimeterTime](#get-multimetertime)
+
 
 ### Get-MultimeterIpStatistics
 
@@ -121,6 +123,10 @@ Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -Sor
 ```powershell
 Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
 ```
+
+### Get-MultimeterStorage
+
+
 
 ### Get-MultimeterTime
 
