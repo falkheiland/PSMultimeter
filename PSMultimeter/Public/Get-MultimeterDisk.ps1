@@ -1,11 +1,11 @@
-function Get-MultimeterStorage
+function Get-MultimeterDisk
 {
     <#
     .SYNOPSIS 
-    Get Storage of the Allegro Multimeter via RESTAPI.
+    Get Disks of the Allegro Multimeter via RESTAPI.
     
     .DESCRIPTION
-    Get Storage of the Allegro Multimeter via RESTAPI.
+    Get Disks of the Allegro Multimeter via RESTAPI.
     
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
@@ -15,12 +15,12 @@ function Get-MultimeterStorage
     
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets storgae from Allegro Multimeter using provided credential
+    Get-MultimeterDisk -Hostname 'allegro-mm-6cb2' -Credential $Credential
+    #Asks for credentail then gets disks from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (Get-MultimeterStorage -Hostname 'allegro-mm-6cb2').device.isInUse
-    #Gets storage from Allegro Multimeter and checks if it is in use
+    (Get-MultimeterDisk -Hostname 'allegro-mm-6cb2').where{$_.transport -eq 'usb'}
+    #Gets disks from Allegro Multimeter that are connected via USB
 
     .NOTES
     n.a.
@@ -64,7 +64,7 @@ function Get-MultimeterStorage
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
         
-        $SessionURL = ('https://{0}/API/system/storage' -f $HostName)
+        $SessionURL = ('https://{0}/API/system/disks' -f $HostName)
 
         $Username = $Credential.UserName
         $Password = $Credential.GetNetworkCredential().Password
