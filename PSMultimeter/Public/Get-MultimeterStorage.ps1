@@ -15,11 +15,11 @@ function Get-MultimeterStorage
     
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
     #Asks for credentail then gets storgae from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential).device.isInUse
+    (Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential).device.isInUse
     #Gets storage from Allegro Multimeter and checks if it is in use.
 
     .NOTES

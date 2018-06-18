@@ -126,7 +126,18 @@ Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
 
 ### Get-MultimeterStorage
 
+**Asks for credentail then gets storgae from Allegro Multimeter using provided credential:**
 
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets storage from Allegro Multimeter and checks if it is in use:**
+
+```powershell
+(Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential).device.isInUse
+```
 
 ### Get-MultimeterTime
 

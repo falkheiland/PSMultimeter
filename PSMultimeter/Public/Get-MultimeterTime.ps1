@@ -19,7 +19,7 @@ function Get-MultimeterTime
     #Asks for credentail then gets time from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
+    Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
     #Gets time from Allegro Multimeter and converts it to .NET Time (DateTime-Format)
 
     .NOTES
