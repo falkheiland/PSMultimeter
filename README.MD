@@ -4,9 +4,47 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 ## Functions
 
+* [Get-MultimeterDisk](#get-multimeterdisk)
+* [Get-MultimeterInterfaceStatistics](#get-multimeterinterfacestatistics)
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
 * [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
+* [Get-MultimeterStorage](#get-multimeterstorage)
+* [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
 * [Get-MultimeterTime](#get-multimetertime)
+
+### Get-MultimeterDisk
+
+Get Disk information
+
+**Asks for credentail then gets disks from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterDisk -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets disks from Allegro Multimeter that are connected via USB:**
+
+```powershell
+(Get-MultimeterDisk -Hostname 'allegro-mm-6cb2').where{$_.transport -eq 'usb'}
+```
+
+### Get-MultimeterInterfaceStatistics
+
+Get interface statistics
+
+**Asks for credentail then interface statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get interface statistics from Allegro Multimeter for interfaces that are connected:**
+
+```powershell
+((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
+```
 
 ### Get-MultimeterIpStatistics
 
@@ -122,9 +160,43 @@ Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -Sor
 Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
 ```
 
+### Get-MultimeterStorage
+
+Get Storage information
+
+**Asks for credentail then gets storgae from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets storage from Allegro Multimeter and checks if it is in use:**
+
+```powershell
+(Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential).device.isInUse
+```
+
+### Get-MultimeterSystemInfo
+
+Get System Info 
+
+**Asks for credentail then gets system info from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Gets uptime in days from Allegro Multimeter:**
+
+```powershell
+[math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
+```
+
 ### Get-MultimeterTime
 
-Get current time of the Allegro Multimeter
+Get current time
 
 **Asks for credentail then gets time from Allegro Multimeter using provided credential:**
 

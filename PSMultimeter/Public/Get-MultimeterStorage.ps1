@@ -1,11 +1,11 @@
-function Get-MultimeterTime
+function Get-MultimeterStorage
 {
     <#
     .SYNOPSIS 
-    Get current time of the Allegro Multimeter via RESTAPI.
+    Get Storage of the Allegro Multimeter via RESTAPI.
     
     .DESCRIPTION
-    Get current time of the Allegro Multimeter via RESTAPI.
+    Get Storage of the Allegro Multimeter via RESTAPI.
     
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
@@ -15,12 +15,12 @@ function Get-MultimeterTime
     
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets time from Allegro Multimeter using provided credential
+    Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
+    #Asks for credentail then gets storgae from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
-    #Gets time from Allegro Multimeter and converts it to .NET Time (DateTime-Format)
+    (Get-MultimeterStorage -Hostname 'allegro-mm-6cb2').device.isInUse
+    #Gets storage from Allegro Multimeter and checks if it is in use
 
     .NOTES
     n.a.
@@ -36,10 +36,7 @@ function Get-MultimeterTime
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
-        $Credential = (Get-Credential -Message 'Enter your credentials'),
-
-        [switch]
-        $DateTime
+        $Credential = (Get-Credential -Message 'Enter your credentials')
     )
     
     begin
@@ -67,7 +64,7 @@ function Get-MultimeterTime
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
         
-        $SessionURL = ('https://{0}/API/stats/time' -f $HostName)
+        $SessionURL = ('https://{0}/API/system/storage' -f $HostName)
 
         $Username = $Credential.UserName
         $Password = $Credential.GetNetworkCredential().Password
@@ -79,18 +76,7 @@ function Get-MultimeterTime
             ContentType = 'application/json; charset=utf-8'
             Method      = 'Get'
         }
-        $MultimeterTime = Invoke-RestMethod @Params
-        switch ($DateTime)
-        {
-            $false
-            {  
-                $MultimeterTime.currentTime
-            }
-            $true
-            {
-                [timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds([math]::Round(($MultimeterTime.currentTime) / 1000)))
-            }
-        }
+        Invoke-RestMethod @Params
     }
     
     end
