@@ -74,6 +74,7 @@
         Get-MultimeterInterfaceStatistics    
         Get-MultimeterIpStatistics
         Get-MultimeterLocationStatistics
+        Get-MultimeterMacStatistics
         Get-MultimeterStorage
         Get-MultimeterSystemInfo
         Get-MultimeterTime

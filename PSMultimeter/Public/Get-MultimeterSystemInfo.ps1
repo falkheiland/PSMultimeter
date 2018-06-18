@@ -15,11 +15,11 @@ function Get-MultimeterSystemInfo
     
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2' -Credential $Credential
     #Asks for credentail then gets system info from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    [math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
+    [math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2').uptimeSec)/86400),2)
     #Gets uptime in days from Allegro Multimeter
 
     .NOTES

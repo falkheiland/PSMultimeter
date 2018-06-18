@@ -37,13 +37,13 @@ Get interface statistics
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 **Get interface statistics from Allegro Multimeter for interfaces that are connected:**
 
 ```powershell
-((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
+((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb2').interfaces).where{$_.linkDetected -eq 'True'}
 ```
 
 ### Get-MultimeterIpStatistics
@@ -118,7 +118,7 @@ Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -IPAddress '192.168.0.1' 
 Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -IPAddress '192.168.0.1' -Ports
 ```
 
-**Gets IP-Statistics for Ports for IP Address '192.168.0.1':**
+**Gets Global IP-Statistics::**
 
 ```powershell
 Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Global
@@ -185,13 +185,13 @@ Get System Info
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 **Gets uptime in days from Allegro Multimeter:**
 
 ```powershell
-[math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
+[math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2').uptimeSec)/86400),2)
 ```
 
 ### Get-MultimeterTime
@@ -208,5 +208,5 @@ Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
 **Gets time from Allegro Multimeter and converts it to .NET Time (DateTime-Format):**
 
 ```powershell
-Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
+Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
 ```
