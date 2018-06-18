@@ -12,7 +12,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 ### Get-MultimeterDisk
 
-Get Disk
+Get Disk information
 
 **Asks for credentail then gets disks from Allegro Multimeter using provided credential:**
 
@@ -143,7 +143,7 @@ Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
 
 ### Get-MultimeterStorage
 
-Get Storage
+Get Storage information
 
 **Asks for credentail then gets storgae from Allegro Multimeter using provided credential:**
 
@@ -160,7 +160,7 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ### Get-MultimeterTime
 
-Get current time of the Allegro Multimeter
+Get current time
 
 **Asks for credentail then gets time from Allegro Multimeter using provided credential:**
 
