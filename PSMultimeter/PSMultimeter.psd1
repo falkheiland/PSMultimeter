@@ -75,6 +75,7 @@
         Get-MultimeterIpStatistics
         Get-MultimeterLocationStatistics
         Get-MultimeterStorage
+        Get-MultimeterSystemInfo
         Get-MultimeterTime
     )
 
