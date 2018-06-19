@@ -13,8 +13,8 @@ function Get-MultimeterMacStatistics
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER IPAddress
-    Ip-Address to get statistics for
+    .PARAMETER MACAddress
+    MAC-Address to get statistics for
 
     .PARAMETER SortBy
     Property to sort by ('bps', 'pps', 'bytes' or 'packets')
@@ -22,23 +22,20 @@ function Get-MultimeterMacStatistics
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
 
-    .PARAMETER Overview
-    Switch to get statistics for IPAdress
-
     .PARAMETER Protocols
     Switch to get statistics for Protocols
 
     .PARAMETER Peers
     Switch to get statistics for Peers
 
-    .PARAMETER Connections
-    Switch to get statistics for Connections
+    .PARAMETER ActiveIPs
+    Switch to get statistics for ActiveIPs
 
-    .PARAMETER Ports
-    Switch to get statistics for Ports
+    .PARAMETER PeerCountries
+    Switch to get statistics for PeerCountries
 
-    .PARAMETER Global
-    Switch to get global IP statistics
+    .PARAMETER Vlans
+    Switch to get global MAC statistics for Vlans
 
     .PARAMETER Page
     Pagenumber
