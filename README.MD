@@ -9,6 +9,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
 * [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
 * [Get-MultimeterMacStatistics](#get-multimetermacstatistics)
+* [Get-MultimeterPacketSize](#get-multimeterpacketsize)
 * [Get-MultimeterStorage](#get-multimeterstorage)
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
 * [Get-MultimeterTime](#get-multimetertime)
@@ -236,6 +237,23 @@ Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87
 
 ```powershell
 ((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
+```
+
+### Get-MultimeterPacketSize
+
+Get packet size (distribution)
+
+**Asks for credentail then gets packet size (distribution) from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterPacketSize -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets all time packet count from Allegro Multimeter for packet size 1519-1522 bytes:**
+
+```powershell
+((Get-MultimeterPacketSize -Hostname 'allegro-mm-6cb2').globalCounters.allTime)[6]
 ```
 
 ### Get-MultimeterStorage
