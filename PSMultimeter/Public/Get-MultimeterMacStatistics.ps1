@@ -51,52 +51,52 @@ function Get-MultimeterMacStatistics
     
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -Credential $Credential
     #Asks for credentail then gets MAC-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
     #Gets MAC-Statistics for the MAC with the most Bytes in the last 1 hour
 
     .EXAMPLE
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -Overview
-    #Gets overview of IP-Statistics for MAC Address 'c2:ea:e4:87:3d:89'
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Overview
+    #Gets overview of IP-Statistics for MAC Address 'b4:ea:e4:87:3d:89'
 
     .EXAMPLE
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -Protocols
-    #Gets MAC-Statistics for Protocols for MAC Address 'c2:ea:e4:87:3d:89'
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Protocols
+    #Gets MAC-Statistics for Protocols for MAC Address 'b4:ea:e4:87:3d:89'
         
     .EXAMPLE
-    (Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -Timespan 60 -Protocols).protocols.Youtube.bytesFrom
-    #Gets Bytes received from for Protocol Youtube for MAC Address 'c2:ea:e4:87:3d:89' during the last 60 seconds
+    ((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Timespan 60 -Protocols -Page 0 -Count 99).displayedItems).where{$_.protocol -eq 'youtube'}
+    #Gets Bytes received from for Protocol Youtube for MAC Address 'b4:ea:e4:87:3d:89' during the last 60 seconds
     
     .EXAMPLE
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -Peers
-    #Gets MAC-Statistics for Peers for MAC Address 'c2:ea:e4:87:3d:89'
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Peers
+    #Gets MAC-Statistics for Peers for MAC Address 'b4:ea:e4:87:3d:89'
 
     .EXAMPLE
-    $Peer = (Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems.dhcpHostName
-    #Gets DHCP Name of the Peer for MAC Address 'c2:ea:e4:87:3d:89' with te most Bytes used
+    (Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems.dhcpHostName
+    #Gets DHCP Name of the Peer for MAC Address 'b4:ea:e4:87:3d:89' with te most Bytes used
     
     .EXAMPLE
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -ActiveIPs
-    #Gets MAC-Statistics for Connections for MAC Address 'c2:ea:e4:87:3d:89'
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs
+    #Gets MAC-Statistics for Connections for MAC Address 'b4:ea:e4:87:3d:89'
     
     .EXAMPLE
-    (Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -ActiveIPs -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.dnsName
-    #Gets DNS Name of the Server with the 3rd most Connections to IP Address 'c2:ea:e4:87:3d:89'
+    (Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.dnsName
+    #Gets DNS Name of the Server with the 3rd most Connections to MAC Address 'b4:ea:e4:87:3d:89'
 
     .EXAMPLE
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -PeerCountries    
-    #Gets MAC-Statistics for Ports for MAC Address 'c2:ea:e4:87:3d:89'
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -PeerCountries
+    #Gets MAC-Statistics for Ports for MAC Address 'b4:ea:e4:87:3d:89'
 
     .EXAMPLE
-    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -Vlans
-    #Gets MAC-Statistics for Vlans for MAC Address 'c2:ea:e4:87:3d:89'
+    Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans
+    #Gets MAC-Statistics for Vlans for MAC Address 'b4:ea:e4:87:3d:89'
 
     .EXAMPLE
-    ((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'c2:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
-    #Gets MAC-Statistics for Vlans which are not the default VLAN for MAC Address 'c2:ea:e4:87:3d:89'
+    ((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
+    #Gets MAC-Statistics for Vlans which are not the default VLAN for MAC Address 'b4:ea:e4:87:3d:89'
 
     .NOTES
     n.a.
@@ -120,7 +120,7 @@ function Get-MultimeterMacStatistics
         [Parameter(ParameterSetName = 'MACAddressActiveIPs')]
         [Parameter(ParameterSetName = 'MACAddressPeerCountries')]
         [Parameter(ParameterSetName = 'MACAddressVlans')]
-        #[ValidateScript( {$_ -match [MACAddress]$_})]
+        [ValidatePattern('(([0-9A-Fa-f]{2}[-:]){5}[0-9A-Fa-f]{2})|(([0-9A-Fa-f]{4}\.){2}[0-9A-Fa-f]{4})')]
         [string]
         $MACAddress,
         
@@ -160,7 +160,6 @@ function Get-MultimeterMacStatistics
         $ActiveIPs,
 
         [Parameter(ParameterSetName = 'MACAddressPeerCountries')]
-        [Parameter(ParameterSetName = 'MACAddressVlans')]
         [switch]
         $PeerCountries,
 
