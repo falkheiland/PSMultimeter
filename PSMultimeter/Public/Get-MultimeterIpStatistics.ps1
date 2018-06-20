@@ -100,7 +100,7 @@ function Get-MultimeterIpStatistics
 
     .EXAMPLE
     Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Global
-    #Gets IP-Statistics for Ports for IP Address '192.168.0.1'
+    #Gets Global IP-Statistics
 
     .EXAMPLE
     $Stats = (Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Global).tcpStats
@@ -248,7 +248,6 @@ function Get-MultimeterIpStatistics
             {  
                 $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&countryfilter={5}&timespan={6}&values={7}' -f $BaseURL, 
                     $SortBy, $ReverseString, $Page, $Count, $Location, $Timespan, $Values)
-                $SessionURL
             }
             IPAddress
             {
@@ -257,7 +256,6 @@ function Get-MultimeterIpStatistics
             IPAddressProtocols
             {
                 $SessionURL = ('{0}/ips/{1}/protocols?timespan={2}&values={3}' -f $BaseURL, $IPAddress, $Timespan, $Values)
-                $SessionURL
             }
             IPAddressPeers
             {

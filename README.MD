@@ -8,6 +8,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterInterfaceStatistics](#get-multimeterinterfacestatistics)
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
 * [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
+* [Get-MultimeterMacStatistics](#get-multimetermacstatistics)
 * [Get-MultimeterStorage](#get-multimeterstorage)
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
 * [Get-MultimeterTime](#get-multimetertime)
@@ -37,13 +38,13 @@ Get interface statistics
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 **Get interface statistics from Allegro Multimeter for interfaces that are connected:**
 
 ```powershell
-((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
+((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb2').interfaces).where{$_.linkDetected -eq 'True'}
 ```
 
 ### Get-MultimeterIpStatistics
@@ -118,7 +119,7 @@ Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -IPAddress '192.168.0.1' 
 Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -IPAddress '192.168.0.1' -Ports
 ```
 
-**Gets IP-Statistics for Ports for IP Address '192.168.0.1':**
+**Gets Global IP-Statistics::**
 
 ```powershell
 Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Global
@@ -160,6 +161,83 @@ Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -Sor
 Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
 ```
 
+### Get-MultimeterMacStatistics
+
+Get MAC Statistics
+
+**Asks for credentail then gets MAC-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets MAC-Statistics for the MAC with the most Bytes in the last 1 hour:**
+
+```powershell
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+```
+
+**Gets overview of IP-Statistics for MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Overview
+```
+
+**Gets MAC-Statistics for Protocols for MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Protocols
+```
+
+**Gets Bytes received from for Protocol Youtube for MAC Address 'b4:ea:e4:87:3d:89' during the last 60 seconds:**
+
+```powershell
+((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Timespan 60 -Protocols -Page 0 -Count 99).displayedItems).where{$_.protocol -eq 'youtube'}
+```
+
+**Gets MAC-Statistics for Peers for MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Peers
+```
+
+**Gets DHCP Name of the Peer for MAC Address 'b4:ea:e4:87:3d:89' with te most Bytes used:**
+
+```powershell
+(Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems.dhcpHostName
+```
+
+**Gets MAC-Statistics for Connections for MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs
+```
+
+**Gets DNS Name of the Server with the 3rd most Connections to MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+(Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.dnsName
+```
+
+**Gets MAC-Statistics for Ports for MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -PeerCountries
+```
+
+**Gets MAC-Statistics for Vlans for MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans
+```
+
+**Gets MAC-Statistics for Vlans which are not the default VLAN for MAC Address 'b4:ea:e4:87:3d:89':**
+
+```powershell
+((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
+```
+
 ### Get-MultimeterStorage
 
 Get Storage information
@@ -185,13 +263,13 @@ Get System Info
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 **Gets uptime in days from Allegro Multimeter:**
 
 ```powershell
-[math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
+[math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2').uptimeSec)/86400),2)
 ```
 
 ### Get-MultimeterTime
@@ -208,5 +286,5 @@ Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
 **Gets time from Allegro Multimeter and converts it to .NET Time (DateTime-Format):**
 
 ```powershell
-Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
+Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
 ```
