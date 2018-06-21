@@ -23,37 +23,37 @@ Get Arp Statistics
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 **Gets Arp-Statistics for the last 1 hour:**
 
 ```powershell
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -Timespan 3600
 ```
 
 **Gets ARP MAC information:**
 
 ```powershell
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -MACInformation
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -MACInformation
 ```
 
 **Gets MAC Address for the Host with most bytes in the last hour:**
 
 ```powershell
-(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -MACInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.mac
+(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -MACInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.mac
 ```
 
 **Gets ARP MAC information:**
 
 ```powershell
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -IPInformation
 ```
 
 **Gets IP Address for the Host with most bytes in the last hour:**
 
 ```powershell
-(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.ip
+(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -IPInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.ip
 ```
 
 ### Get-MultimeterDisk
