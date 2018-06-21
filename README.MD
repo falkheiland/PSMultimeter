@@ -4,6 +4,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 ## Functions
 
+* [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
 * [Get-MultimeterDisk](#get-multimeterdisk)
 * [Get-MultimeterInterfaceStatistics](#get-multimeterinterfacestatistics)
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
@@ -13,6 +14,48 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterStorage](#get-multimeterstorage)
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
 * [Get-MultimeterTime](#get-multimetertime)
+* [Get-MultimeterVlanStatistic](#get-multimetervlanstatistic)
+
+### Get-MultimeterArpStatistic
+
+Get Arp Statistics
+
+**Asks for credentail then gets Arp-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets Arp-Statistics for the last 1 hour:**
+
+```powershell
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -Timespan 3600
+```
+
+**Gets ARP MAC information:**
+
+```powershell
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -MACInformation
+```
+
+**Gets MAC Address for the Host with most bytes in the last hour:**
+
+```powershell
+(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -MACInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.mac
+```
+
+**Gets ARP MAC information:**
+
+```powershell
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -IPInformation
+```
+
+**Gets IP Address for the Host with most bytes in the last hour:**
+
+```powershell
+(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -IPInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.ip
+```
 
 ### Get-MultimeterDisk
 
@@ -275,7 +318,7 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ### Get-MultimeterSystemInfo
 
-Get System Info 
+Get System Info
 
 **Asks for credentail then gets system info from Allegro Multimeter using provided credential:**
 
@@ -305,4 +348,39 @@ Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ```powershell
 Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
+```
+
+### Get-MultimeterVlanStatistic
+
+Get Vlan Statistics
+
+**Asks for credentail then gets Vlan-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets Vlan-Statistics for the last 1 hour and shows bytes for VLAN 1:**
+
+```powershell
+(((Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Timespan 3600).displayedItems).where{$_.outerVlanTag -eq -1}).bytes
+```
+
+**Gets VLAN Q-inQ statistics:**
+
+```powershell
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -VLANQinQ
+```
+
+**Gets statistics for outer VLAN '111':**
+
+```powershell
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Vlan 111
+```
+
+**Gets statistics for outer VLAN '111', no inner VLAN (-1):**
+
+```powershell
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -OuterVlan 111 -InnerVlan -1
 ```
