@@ -351,7 +351,7 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 Get STP Statistics
 
-**Asks for credential then gets time from Allegro Multimeter using provided credential:**
+**Asks for credential then gets STP statistics from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
