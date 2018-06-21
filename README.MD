@@ -4,6 +4,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 ## Functions
 
+* [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
 * [Get-MultimeterDisk](#get-multimeterdisk)
 * [Get-MultimeterInterfaceStatistics](#get-multimeterinterfacestatistics)
 * [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
@@ -13,6 +14,47 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterStorage](#get-multimeterstorage)
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
 * [Get-MultimeterTime](#get-multimetertime)
+
+### Get-MultimeterArpStatistic
+
+Get Arp Statistics
+
+**Asks for credentail then gets Arp-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Gets Arp-Statistics for the last 1 hour:**
+
+```powershell
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600
+```
+
+**Gets ARP MAC information:**
+
+```powershell
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -MACInformation
+```
+
+**Gets MAC Address for the Host with most bytes in the last hour:**
+
+```powershell
+(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -MACInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.mac
+```
+
+**Gets ARP MAC information:**
+
+```powershell
+Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation
+```
+
+**Gets IP Address for the Host with most bytes in the last hour:**
+
+```powershell
+(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.ip
+```
 
 ### Get-MultimeterDisk
 
@@ -275,7 +317,7 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ### Get-MultimeterSystemInfo
 
-Get System Info 
+Get System Info
 
 **Asks for credentail then gets system info from Allegro Multimeter using provided credential:**
 
