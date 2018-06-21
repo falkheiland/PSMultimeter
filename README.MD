@@ -13,6 +13,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterMacStatistics](#get-multimetermacstatistics)
 * [Get-MultimeterPacketSize](#get-multimeterpacketsize)
 * [Get-MultimeterStorage](#get-multimeterstorage)
+* [Get-MultimeterStpStatistic](#get-multimeterstpstatistic)
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
 * [Get-MultimeterTime](#get-multimetertime)
 * [Get-MultimeterVlanStatistic](#get-multimetervlanstatistic)
@@ -214,25 +215,25 @@ Get MAC protocols
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 **Gets all Time counters for MAC protocols:**
 
 ```powershell
-(Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3').globalCounters.allTime
+(Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2').globalCounters.allTime
 ```
 
 **Gets MAC protocols:**
 
 ```powershell
-Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols
+Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Protocols
 ```
 
 **Gets MAC protocols:**
 
 ```powershell
-Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols 
+Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Protocols 
 ```
 
 ### Get-MultimeterMacStatistics
@@ -344,6 +345,17 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ```powershell
 (Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential).device.isInUse
+```
+
+### Get-MultimeterStpStatistic
+
+Get STP Statistics
+
+**Asks for credential then gets time from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterStpStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 ### Get-MultimeterSystemInfo

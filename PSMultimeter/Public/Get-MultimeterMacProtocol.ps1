@@ -39,19 +39,19 @@ function Get-MultimeterMacProtocol
     
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Credential $Credential
     #Asks for credentail then gets MAC protocols from Allegro Multimeter using provided credential
     
     .EXAMPLE
-    (Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3').globalCounters.allTime
+    (Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2').globalCounters.allTime
     #Gets all Time counters for MAC protocols
     
     .EXAMPLE
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols
+    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Protocols
     #Gets MAC protocols
 
     .EXAMPLE
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols 
+    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Protocols 
     #Gets MAC protocols
 
     .NOTES
