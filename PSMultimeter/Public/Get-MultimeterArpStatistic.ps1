@@ -62,9 +62,6 @@ function Get-MultimeterArpStatistic
     (Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -IPInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.ip
     #Gets IP Address for the Host with most bytes in the last hour
 
-
-
-
     .NOTES
     n.a.
 
