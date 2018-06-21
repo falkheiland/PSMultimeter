@@ -14,6 +14,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterStorage](#get-multimeterstorage)
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
 * [Get-MultimeterTime](#get-multimetertime)
+* [Get-MultimeterVlanStatistic](#get-multimetervlanstatistic)
 
 ### Get-MultimeterArpStatistic
 
@@ -347,4 +348,39 @@ Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 ```powershell
 Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
+```
+
+### Get-MultimeterVlanStatistic
+
+Get Vlan Statistics
+
+**Asks for credentail then gets Vlan-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
+```
+
+**Gets Vlan-Statistics for the last 1 hour and shows bytes for VLAN 1:**
+
+```powershell
+(((Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Timespan 3600).displayedItems).where{$_.outerVlanTag -eq -1}).bytes
+```
+
+**Gets VLAN Q-inQ statistics:**
+
+```powershell
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -VLANQinQ
+```
+
+**Gets statistics for outer VLAN '111':**
+
+```powershell
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Vlan 111
+```
+
+**Gets statistics for outer VLAN '111', no inner VLAN (-1):**
+
+```powershell
+Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -OuterVlan 111 -InnerVlan -1
 ```
