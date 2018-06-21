@@ -46,7 +46,7 @@ function Get-MultimeterVlanStatistic
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
     Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets Vlan-Statistics from Allegro Multimeter using provided credential
+    #Asks for credential then gets Vlan-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
     (((Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Timespan 3600).displayedItems).where{$_.outerVlanTag -eq -1}).bytes

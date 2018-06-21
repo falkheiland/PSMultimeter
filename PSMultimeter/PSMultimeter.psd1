@@ -75,9 +75,11 @@
         Get-MultimeterInterfaceStatistics    
         Get-MultimeterIpStatistics
         Get-MultimeterLocationStatistics
+        Get-MultimeterMacProtocol
         Get-MultimeterMacStatistics
         Get-MultimeterPacketSize
         Get-MultimeterStorage
+        Get-MultimeterStpStatistic
         Get-MultimeterSystemInfo
         Get-MultimeterTime
         Get-MultimeterVlanStatistic
