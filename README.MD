@@ -20,7 +20,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 Get Arp Statistics
 
-**Asks for credentail then gets Arp-Statistics from Allegro Multimeter using provided credential:**
+**Asks for credential then gets Arp-Statistics from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -61,7 +61,7 @@ Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -IPInformation
 
 Get Disk information
 
-**Asks for credentail then gets disks from Allegro Multimeter using provided credential:**
+**Asks for credential then gets disks from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -78,7 +78,7 @@ Get-MultimeterDisk -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 Get interface statistics
 
-**Asks for credentail then interface statistics from Allegro Multimeter using provided credential:**
+**Asks for credential then interface statistics from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -95,7 +95,7 @@ Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb2' -Credential $Crede
 
 Get IP statistics
 
-**Asks for credentail then gets IP-Statistics from Allegro Multimeter using provided credential:**
+**Asks for credential then gets IP-Statistics from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -180,7 +180,7 @@ $Stats = (Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb2' -Global).tcpSta
 
 Get Location Statistics
 
-**Asks for credentail then gets Location-Statistics from Allegro Multimeter using provided credential:**
+**Asks for credential then gets Location-Statistics from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -209,7 +209,7 @@ Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
 
 Get MAC Statistics
 
-**Asks for credentail then gets MAC-Statistics from Allegro Multimeter using provided credential:**
+**Asks for credential then gets MAC-Statistics from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -286,7 +286,7 @@ Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87
 
 Get packet size (distribution)
 
-**Asks for credentail then gets packet size (distribution) from Allegro Multimeter using provided credential:**
+**Asks for credential then gets packet size (distribution) from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -303,7 +303,7 @@ Get-MultimeterPacketSize -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 Get Storage information
 
-**Asks for credentail then gets storgae from Allegro Multimeter using provided credential:**
+**Asks for credential then gets storgae from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -320,7 +320,7 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 Get System Info
 
-**Asks for credentail then gets system info from Allegro Multimeter using provided credential:**
+**Asks for credential then gets system info from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -337,7 +337,7 @@ Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2' -Credential $Credential
 
 Get current time
 
-**Asks for credentail then gets time from Allegro Multimeter using provided credential:**
+**Asks for credential then gets time from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
@@ -354,7 +354,7 @@ Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
 
 Get Vlan Statistics
 
-**Asks for credentail then gets Vlan-Statistics from Allegro Multimeter using provided credential:**
+**Asks for credential then gets Vlan-Statistics from Allegro Multimeter using provided credential:**
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
