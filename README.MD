@@ -11,6 +11,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
 * [Get-MultimeterMacProtocol](#get-multimetermacprotocol)
 * [Get-MultimeterMacStatistics](#get-multimetermacstatistics)
+* [Get-MultimeterNotification](#get-multimeternotification)
 * [Get-MultimeterPacketSize](#get-multimeterpacketsize)
 * [Get-MultimeterStorage](#get-multimeterstorage)
 * [Get-MultimeterStpStatistic](#get-multimeterstpstatistic)
@@ -311,6 +312,17 @@ Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87
 
 ```powershell
 ((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb2' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
+```
+
+### Get-MultimeterNotification
+
+Get notifications
+
+**Asks for credentail then gets notifications from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterNotification -Hostname 'allegro-mm-6cb2' -Credential $Credential
 ```
 
 ### Get-MultimeterPacketSize
