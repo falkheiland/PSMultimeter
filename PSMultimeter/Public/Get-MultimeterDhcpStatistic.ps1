@@ -46,28 +46,28 @@ function Get-MultimeterDhcpStatistic
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
     Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Asks for credential then gets DHCP information from DHCP-Statistics from Allegro Multimeter using provided credential
+    #Ask for credential then get DHCP information from DHCP-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
     (Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.hostName
-    #Gets Hostnames of the first 20 IP Addresses for the last 1 hour
+    #Get Hostnames of the first 20 IP Addresses for the last 1 hour
 
     .EXAMPLE
     Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -DHCPServer
-    #Gets DHCP Server information
+    #Get DHCP Server information
 
     .EXAMPLE
     Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -GRT
-    #Gets DHCP Global response times
+    #Get DHCP Global response times
 
     .EXAMPLE
     Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes
-    #Gets DHCP message types
+    #Get DHCP message types
 
     .EXAMPLE
     (((Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes).where{$_.name -eq 'request'}) | 
         Select-Object -Property Count).count
-    #Gets number of DHCP messages of type 'request'
+    #Get number of DHCP messages of type 'request'
 
     .NOTES
     n.a.
