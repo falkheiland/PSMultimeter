@@ -40,7 +40,7 @@ function Get-MultimeterArpStatistic
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
     Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets Arp-Statistics from Allegro Multimeter using provided credential
+    #Asks for credential then gets Arp-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
     Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb2' -Timespan 3600
