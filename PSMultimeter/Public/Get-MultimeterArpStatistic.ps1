@@ -19,12 +19,6 @@ function Get-MultimeterArpStatistic
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
 
-    .PARAMETER MACInformation
-    Switch to get statistics for MACInformation
-
-    .PARAMETER IPInformation
-    Switch to get statistics for IPInformation
-
     .PARAMETER Page
     Pagenumber
 
