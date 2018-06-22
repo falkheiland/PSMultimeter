@@ -71,12 +71,14 @@
     # Aus diesem Modul zu exportierende Funktionen. Um optimale Leistung zu erzielen, verwenden Sie keine Platzhalter und löschen den Eintrag nicht. Verwenden Sie ein leeres Array, wenn keine zu exportierenden Funktionen vorhanden sind.
     FunctionsToExport = @(
         Get-MultimeterArpStatistic
+        Get-MultimeterDhcpStatistic
         Get-MultimeterDisk
-        Get-MultimeterInterfaceStatistics    
-        Get-MultimeterIpStatistics
-        Get-MultimeterLocationStatistics
+        Get-MultimeterInterfaceStatistic
+        Get-MultimeterIpStatistic
+        Get-MultimeterLocationStatistic
         Get-MultimeterMacProtocol
-        Get-MultimeterMacStatistics
+        Get-MultimeterMacStatistic
+        Get-MultimeterNotification
         Get-MultimeterPacketSize
         Get-MultimeterStorage
         Get-MultimeterStpStatistic

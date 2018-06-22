@@ -1,15 +1,15 @@
 function Get-MultimeterMacProtocol
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get MAC protocols of the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get MAC protocols of the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname  of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
@@ -36,23 +36,19 @@ function Get-MultimeterMacProtocol
 
     .PARAMETER Values
     Values
-    
-    .EXAMPLE
-    $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets MAC protocols from Allegro Multimeter using provided credential
-    
-    .EXAMPLE
-    (Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2').globalCounters.allTime
-    #Gets all Time counters for MAC protocols
-    
-    .EXAMPLE
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Protocols
-    #Gets MAC protocols
 
     .EXAMPLE
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb2' -Protocols 
-    #Gets MAC protocols
+    $Credential = Get-Credential -Message 'Enter your credentials'
+    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get MAC protocols from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    (Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3').globalCounters.allTime
+    #Get all Time counters for MAC protocols
+
+    .EXAMPLE
+    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols
+    #Get MAC protocols
 
     .NOTES
     n.a.
@@ -64,12 +60,12 @@ function Get-MultimeterMacProtocol
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
-        
+
         [string]
         [Parameter(ParameterSetName = 'MACProtocols')]
         [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
@@ -98,7 +94,7 @@ function Get-MultimeterMacProtocol
         [int]
         $Values = 50
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -117,13 +113,12 @@ function Get-MultimeterMacProtocol
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
 
         switch ($Reverse)
@@ -137,17 +132,17 @@ function Get-MultimeterMacProtocol
                 $ReverseString = 'false'
             }
         }
-    
+
         switch ($PsCmdlet.ParameterSetName)
         {
             Overview
-            {  
+            {
                 $SessionURL = ('{0}/generic?timespan={1}' -f $BaseURL, $Timespan)
             }
 
             MACProtocols
             {
-                $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL, 
+                $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
                     $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
             }
         }

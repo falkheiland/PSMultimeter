@@ -1,25 +1,31 @@
-function Get-MultimeterInterfaceStatistics
+function Get-MultimeterInterfaceStatistic
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get interface statistics of the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get interface statistics of the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
-    
-    .EXAMPLE
-    $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Asks for credentail then interface statistics from Allegro Multimeter using provided credential
+
+    .PARAMETER Timespan
+    Timespan
+
+    .PARAMETER Values
+    Values
 
     .EXAMPLE
-    ((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
+    $Credential = Get-Credential -Message 'Enter your credentials'
+    Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get interface statistics from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    ((Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
     #Get interface statistics from Allegro Multimeter for interfaces that are connected
 
     .NOTES
@@ -32,19 +38,19 @@ function Get-MultimeterInterfaceStatistics
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
-        
+
         [int]
         $Timespan = 60,
 
         [int]
         $Values = 30
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -63,13 +69,12 @@ function Get-MultimeterInterfaceStatistics
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $SessionURL = ('https://{0}/API/stats/interfaces?timespan={1}&values={2}' -f $HostName, $Timespan, $Values)
 
         $Username = $Credential.UserName
@@ -84,7 +89,6 @@ function Get-MultimeterInterfaceStatistics
         }
         Invoke-RestMethod @Params
     }
-    
     end
     {
     }
