@@ -1,15 +1,15 @@
 function Get-MultimeterStpStatistic
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get STP Statistics of the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get STP Statistics of the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
@@ -21,11 +21,11 @@ function Get-MultimeterStpStatistic
 
     .PARAMETER Values
     Values
-    
+
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterStpStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credential then gets time from Allegro Multimeter using provided credential
+    Get-MultimeterStpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get time from Allegro Multimeter using provided credential
 
     .NOTES
     n.a.
@@ -37,7 +37,7 @@ function Get-MultimeterStpStatistic
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
@@ -53,7 +53,7 @@ function Get-MultimeterStpStatistic
         [int]
         $Values = 60
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -72,13 +72,12 @@ function Get-MultimeterStpStatistic
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $SessionURL = ('https://{0}/API/stats/modules/stp?detail={1}&timespan={2}&values={3}' -f $HostName, $Details, $Timespan, $Values)
 
         $Username = $Credential.UserName
@@ -93,7 +92,6 @@ function Get-MultimeterStpStatistic
         }
         Invoke-RestMethod @Params
     }
-    
     end
     {
     }

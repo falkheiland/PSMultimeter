@@ -1,26 +1,29 @@
 function Get-MultimeterTime
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get current time of the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get current time of the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
-    
-    .EXAMPLE
-    $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets time from Allegro Multimeter using provided credential
+
+    .PARAMETER DateTime
+    Switch to get .NET Time (DateTime-Format)
 
     .EXAMPLE
-    Get-MultimeterTime -Hostname 'allegro-mm-6cb2' -DateTime
-    #Gets time from Allegro Multimeter and converts it to .NET Time (DateTime-Format)
+    $Credential = Get-Credential -Message 'Enter your credentials'
+    Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get time from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
+    #Get time from Allegro Multimeter and convert it to .NET Time (DateTime-Format)
 
     .NOTES
     n.a.
@@ -32,7 +35,7 @@ function Get-MultimeterTime
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
@@ -41,7 +44,7 @@ function Get-MultimeterTime
         [switch]
         $DateTime
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -60,13 +63,12 @@ function Get-MultimeterTime
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $SessionURL = ('https://{0}/API/stats/time' -f $HostName)
 
         $Username = $Credential.UserName
@@ -83,7 +85,7 @@ function Get-MultimeterTime
         switch ($DateTime)
         {
             $false
-            {  
+            {
                 $MultimeterTime.currentTime
             }
             $true
@@ -92,7 +94,6 @@ function Get-MultimeterTime
             }
         }
     }
-    
     end
     {
     }

@@ -1,15 +1,15 @@
 function Get-MultimeterVlanStatistic
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get Vlan Statistics for the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get Vlan Statistics for the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname  of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
@@ -30,7 +30,7 @@ function Get-MultimeterVlanStatistic
 
     .PARAMETER InnerVlan
     Inner Vlan to get statistics for, -1 equals 'no VLAN'
-    
+
     .PARAMETER Page
     Pagenumber
 
@@ -42,27 +42,27 @@ function Get-MultimeterVlanStatistic
 
     .PARAMETER Values
     Values
-    
+
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credential then gets Vlan-Statistics from Allegro Multimeter using provided credential
+    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get Vlan-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (((Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Timespan 3600).displayedItems).where{$_.outerVlanTag -eq -1}).bytes
-    #Gets Vlan-Statistics for the last 1 hour and shows bytes for VLAN 1
+    (((Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600).displayedItems).where{$_.outerVlanTag -eq -1}).bytes
+    #Get Vlan-Statistics for the last 1 hour and shows bytes for VLAN 1
 
     .EXAMPLE
-    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -VLANQinQ
-    #Gets VLAN Q-inQ statistics
+    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -VLANQinQ
+    #Get VLAN Q-inQ statistics
 
     .EXAMPLE
-    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -Vlan 111
-    #Gets statistics for outer VLAN '111'
+    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -Vlan 111
+    #Get statistics for outer VLAN '111'
 
     .EXAMPLE
-    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb2' -OuterVlan 111 -InnerVlan -1
-    #Gets statistics for outer VLAN '111', no inner VLAN (-1)
+    Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -OuterVlan 111 -InnerVlan -1
+    #Get statistics for outer VLAN '111', no inner VLAN (-1)
 
     .NOTES
     n.a.
@@ -74,12 +74,12 @@ function Get-MultimeterVlanStatistic
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
-        
+
         [string]
         [Parameter(ParameterSetName = 'OuterVLAN')]
         [Parameter(ParameterSetName = 'VLANQinQ')]
@@ -109,7 +109,7 @@ function Get-MultimeterVlanStatistic
         [ValidateRange(-1, 4096)]
         [int]
         $InnerVlan,
-        
+
         [Parameter(ParameterSetName = 'OuterVLAN')]
         [Parameter(ParameterSetName = 'MACInformation')]
         [Parameter(ParameterSetName = 'VLANQinQ')]
@@ -128,7 +128,7 @@ function Get-MultimeterVlanStatistic
         [int]
         $Values = 50
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -147,13 +147,12 @@ function Get-MultimeterVlanStatistic
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $BaseURL = ('https://{0}/API/stats/modules/vlan' -f $HostName)
 
         switch ($Reverse)
@@ -167,27 +166,27 @@ function Get-MultimeterVlanStatistic
                 $ReverseString = 'false'
             }
         }
-    
+
         switch ($PsCmdlet.ParameterSetName)
         {
             OuterVLAN
-            {  
-                $SessionURL = ('{0}/vlans_paged?sort={1}&reverse={2}&page={3}&count={4}&values={5}&timespan={6}' -f $BaseURL, 
+            {
+                $SessionURL = ('{0}/vlans_paged?sort={1}&reverse={2}&page={3}&count={4}&values={5}&timespan={6}' -f $BaseURL,
                     $SortBy, $ReverseString, $Page, $Count, $Values, $Timespan)
             }
             VLANQinQ
             {
-                $SessionURL = ('{0}/inner_vlans_paged?sort={1}&reverse={2}&page={3}&count={4}&values={5}&timespan={6}' -f $BaseURL, 
+                $SessionURL = ('{0}/inner_vlans_paged?sort={1}&reverse={2}&page={3}&count={4}&values={5}&timespan={6}' -f $BaseURL,
                     $SortBy, $ReverseString, $Page, $Count, $Values, $Timespan)
             }
             VLAN
             {
-                $SessionURL = ('{0}/vlans/{1}?timespan={2}' -f $BaseURL, 
+                $SessionURL = ('{0}/vlans/{1}?timespan={2}' -f $BaseURL,
                     $Vlan, $Timespan)
             }
             OIVLAN
             {
-                $SessionURL = ('{0}/vlans/{1}_{2}?timespan={3}' -f $BaseURL, 
+                $SessionURL = ('{0}/vlans/{1}_{2}?timespan={3}' -f $BaseURL,
                     $OuterVlan, $InnerVlan, $Timespan)
             }
         }
@@ -204,7 +203,6 @@ function Get-MultimeterVlanStatistic
         }
         Invoke-RestMethod @Params
     }
-    
     end
     {
     }

@@ -1,26 +1,26 @@
 function Get-MultimeterStorage
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get Storage of the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get Storage of the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
-    
-    .EXAMPLE
-    $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterStorage -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets storgae from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (Get-MultimeterStorage -Hostname 'allegro-mm-6cb2').device.isInUse
-    #Gets storage from Allegro Multimeter and checks if it is in use
+    $Credential = Get-Credential -Message 'Enter your credentials'
+    Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get storgae from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    (Get-MultimeterStorage -Hostname 'allegro-mm-6cb3').device.isInUse
+    #Get storage from Allegro Multimeter and checks if it is in use
 
     .NOTES
     n.a.
@@ -32,13 +32,13 @@ function Get-MultimeterStorage
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials')
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -57,13 +57,12 @@ function Get-MultimeterStorage
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $SessionURL = ('https://{0}/API/system/storage' -f $HostName)
 
         $Username = $Credential.UserName
@@ -78,7 +77,6 @@ function Get-MultimeterStorage
         }
         Invoke-RestMethod @Params
     }
-    
     end
     {
     }

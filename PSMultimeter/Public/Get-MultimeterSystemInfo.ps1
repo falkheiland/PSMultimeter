@@ -1,26 +1,26 @@
 function Get-MultimeterSystemInfo
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get System Info of the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get System Info of the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
-    
-    .EXAMPLE
-    $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets system info from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    [math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb2').uptimeSec)/86400),2)
-    #Gets uptime in days from Allegro Multimeter
+    $Credential = Get-Credential -Message 'Enter your credentials'
+    Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get system info from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    [math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
+    #Get uptime in days from Allegro Multimeter
 
     .NOTES
     n.a.
@@ -32,13 +32,13 @@ function Get-MultimeterSystemInfo
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials')
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -57,13 +57,12 @@ function Get-MultimeterSystemInfo
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $SessionURL = ('https://{0}/API/info/system' -f $HostName)
 
         $Username = $Credential.UserName
@@ -78,7 +77,6 @@ function Get-MultimeterSystemInfo
         }
         Invoke-RestMethod @Params
     }
-    
     end
     {
     }

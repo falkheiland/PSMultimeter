@@ -1,21 +1,21 @@
 function Get-MultimeterDhcpStatistic
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get DHCP Statistics for the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get DHCP Statistics for the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
     .PARAMETER Details
     Details ('full')
-    
+
     .PARAMETER SortBy
     Property to sort by ('issueTime', 'ip', 'name', 'mac')
 
@@ -42,7 +42,7 @@ function Get-MultimeterDhcpStatistic
 
     .PARAMETER Values
     Values
-    
+
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
     Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
@@ -65,7 +65,7 @@ function Get-MultimeterDhcpStatistic
     #Get DHCP message types
 
     .EXAMPLE
-    (((Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes).where{$_.name -eq 'request'}) | 
+    (((Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes).where{$_.name -eq 'request'}) |
         Select-Object -Property Count).count
     #Get number of DHCP messages of type 'request'
 
@@ -79,12 +79,12 @@ function Get-MultimeterDhcpStatistic
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
-        
+
         [Parameter(ParameterSetName = 'GRT')]
         [Parameter(ParameterSetName = 'MessageTypes')]
         [Parameter(ParameterSetName = 'DHCPServer')]
@@ -133,7 +133,7 @@ function Get-MultimeterDhcpStatistic
         [int]
         $Values = 60
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -152,13 +152,12 @@ function Get-MultimeterDhcpStatistic
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $BaseURL = ('https://{0}/API/stats/modules/dhcp' -f $HostName)
 
         switch ($Reverse)
@@ -172,12 +171,12 @@ function Get-MultimeterDhcpStatistic
                 $ReverseString = 'false'
             }
         }
-    
+
         switch ($PsCmdlet.ParameterSetName)
         {
             Overview
             {
-                $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL, 
+                $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
                     $SortBy, $ReverseString, $Page, $Count, $Timespan)
                 #Overview
                 #DHCP information
@@ -190,13 +189,13 @@ function Get-MultimeterDhcpStatistic
                 #https://allegro-mm-6cb3/API/stats/modules/dhcp/servers?detail=full&timespan=60&values=60
             }
             GRT
-            {  
+            {
                 $SessionURL = ('{0}?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
                 #Global response times and MessageTypes
                 #https://allegro-mm-6cb3/API/stats/modules/dhcp?detail=full&timespan=60&values=60
             }
             MessageTypes
-            {  
+            {
                 $SessionURL = ('{0}?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
                 #Global response times and MessageTypes
                 #https://allegro-mm-6cb3/API/stats/modules/dhcp?detail=full&timespan=60&values=60
@@ -229,7 +228,6 @@ function Get-MultimeterDhcpStatistic
             }
         }
     }
-    
     end
     {
     }

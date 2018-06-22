@@ -1,26 +1,26 @@
-function Get-MultimeterLocationStatistics
+function Get-MultimeterLocationStatistic
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get Location Statistics for the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get Location Statistics for the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname  of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
+
+    .PARAMETER Location
+    Location to get Statistics for
 
     .PARAMETER SortBy
     Property to sort by ('bps', 'pps', 'bytes' or 'packets')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
-
-    .PARAMETER Location
-    Location to get Statistics for
 
     .PARAMETER Page
     Pagenumber
@@ -33,23 +33,23 @@ function Get-MultimeterLocationStatistics
 
     .PARAMETER Values
     Values
-    
+
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets Location-Statistics from Allegro Multimeter using provided credential
+    Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get Location-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -SortBy bytes -Page 0 -Count 10 -Reverse).displayedItems.code
-    #Gets Code for the 10 Locations with most Bytes
+    (Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -SortBy bytes -Page 0 -Count 10 -Reverse).displayedItems.code
+    #Get Code for the 10 Locations with most Bytes
 
     .EXAMPLE
-    Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
-    #Gets Location-Statistics for the Location with the most Bytes in the last 1 hour
+    Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+    #Get Location-Statistics for the Location with the most Bytes in the last 1 hour
 
     .EXAMPLE
-    Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb2' -Location 'DE'
-    #Gets overview of Location-Statistics for Location 'DE'
+    Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Location 'DE'
+    #Get overview of Location-Statistics for Location 'DE'
 
     .NOTES
     n.a.
@@ -61,7 +61,7 @@ function Get-MultimeterLocationStatistics
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
@@ -70,7 +70,7 @@ function Get-MultimeterLocationStatistics
         [Parameter(ParameterSetName = 'Location')]
         [string]
         $Location,
-        
+
         [string]
         [Parameter(ParameterSetName = 'Locations')]
         [ValidateSet('bps', 'pps', 'bytes', 'packets')]
@@ -94,7 +94,7 @@ function Get-MultimeterLocationStatistics
         [int]
         $Values = 50
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -116,10 +116,10 @@ function Get-MultimeterLocationStatistics
 
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $BaseURL = ('https://{0}/API/stats/modules/location' -f $HostName)
 
         switch ($Reverse)
@@ -133,12 +133,12 @@ function Get-MultimeterLocationStatistics
                 $ReverseString = 'false'
             }
         }
-    
+
         switch ($PsCmdlet.ParameterSetName)
         {
             Locations
-            {  
-                $SessionURL = ('{0}/countries_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL, 
+            {
+                $SessionURL = ('{0}/countries_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
                     $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
             }
             Location
@@ -160,7 +160,6 @@ function Get-MultimeterLocationStatistics
         }
         Invoke-RestMethod @Params
     }
-    
     end
     {
     }

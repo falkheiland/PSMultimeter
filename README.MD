@@ -7,11 +7,11 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
 * [Get-MultimeterDhcpStatistic](#Get-multimeterdhcpstatistic)
 * [Get-MultimeterDisk](#get-multimeterdisk)
-* [Get-MultimeterInterfaceStatistics](#get-multimeterinterfacestatistics)
-* [Get-MultimeterIpStatistics](#get-multimeteripstatistics)
-* [Get-MultimeterLocationStatistics](#get-multimeterlocationstatistics)
+* [Get-MultimeterInterfaceStatistic](#get-multimeterinterfacestatistic)
+* [Get-MultimeterIpStatistic](#get-multimeteripstatistic)
+* [Get-MultimeterLocationStatistic](#get-multimeterlocationstatistic)
 * [Get-MultimeterMacProtocol](#get-multimetermacprotocol)
-* [Get-MultimeterMacStatistics](#get-multimetermacstatistics)
+* [Get-MultimeterMacStatistic](#get-multimetermacstatistic)
 * [Get-MultimeterNotification](#get-multimeternotification)
 * [Get-MultimeterPacketSize](#get-multimeterpacketsize)
 * [Get-MultimeterStorage](#get-multimeterstorage)
@@ -99,7 +99,7 @@ Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes
 **Get number of DHCP messages of type 'request':**
 
 ```powershell
-(((Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes).where{$_.name -eq 'request'}) | 
+(((Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes).where{$_.name -eq 'request'}) |
 Select-Object -Property Count).count
 ```
 
@@ -120,7 +120,7 @@ Get-MultimeterDisk -Hostname 'allegro-mm-6cb3' -Credential $Credential
 (Get-MultimeterDisk -Hostname 'allegro-mm-6cb3').where{$_.transport -eq 'usb'}
 ```
 
-### Get-MultimeterInterfaceStatistics
+### Get-MultimeterInterfaceStatistic
 
 Get interface statistics
 
@@ -128,16 +128,16 @@ Get interface statistics
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
 
 **Get interface statistics from Allegro Multimeter for interfaces that are connected:**
 
 ```powershell
-((Get-MultimeterInterfaceStatistics -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
+((Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
 ```
 
-### Get-MultimeterIpStatistics
+### Get-MultimeterIpStatistic
 
 Get IP statistics
 
@@ -145,84 +145,84 @@ Get IP statistics
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
 
 **Get IP-Statistics for the IP Address with the most Bytes in the last 1 hour:**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
 ```
 
 **Get IP-Statistics for the IP Address with the most Bytes in the last 1 hour from Location Germany:**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Page 0 -Count 1 -Reverse -Location 'DE'
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Page 0 -Count 1 -Reverse -Location 'DE'
 ```
 
 **Get overview of IP-Statistics for IP Address '192.168.0.1':**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Overview
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Overview
 ```
 
 **Get IP-Statistics for Protocols for IP Address '192.168.0.1':**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Protocols
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Protocols
 ```
 
 **Get Bytes received from for Protocol Youtube for IP Address '192.168.0.1' during the last 60 seconds :**
 
 ```powershell
-(Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Timespan 60 -Protocols).protocols.Youtube.bytesFrom
+(Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Timespan 60 -Protocols).protocols.Youtube.bytesFrom
 ```
 
 **Get IP-Statistics for Peers for IP Address '192.168.0.1':**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers
 ```
 
 **Get the Peer for IP Address '192.168.0.1' with te most Bytes used and converts its Geolocation to Google Maps URL:**
 
 ```powershell
-$Peer = (Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems
+$Peer = (Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems
 'http://maps.google.com/?ll={0},{1}' -f ($Peer.latitude -replace(',','.')), ($Peer.longitude -replace(',','.'))
 ```
 
 **Get IP-Statistics for Connections for IP Address '192.168.0.1':**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections
 ```
 
 **Get DNS Name of the Server with the 3rd most Connections to IP Address '192.168.0.1':**
 
 ```powershell
-(Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.server.dnsName
+(Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.server.dnsName
 ```
 
 **Get IP-Statistics for Ports for IP Address '192.168.0.1':**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Ports
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Ports
 ```
 
 **Get Global IP-Statistics::**
 
 ```powershell
-Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -Global
+Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Global
 ```
 
 **Get Retransmissions in Percent from Global IP-Statistics**:
 
 ```powershell
-$Stats = (Get-MultimeterIpStatistics -Hostname 'allegro-mm-6cb3' -Global).tcpStats
+$Stats = (Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Global).tcpStats
 'Retransmissions: {0}%' -f [math]::Round(($Stats.globalRetransmissionBytes*100/$Stats.globalTotalBytes),3)
 ```
 
-### Get-MultimeterLocationStatistics
+### Get-MultimeterLocationStatistic
 
 Get Location Statistics
 
@@ -230,25 +230,25 @@ Get Location Statistics
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
 
 **Get Code for the 10 Locations with most Bytes:**
 
 ```powershell
-(Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb3' -SortBy bytes -Page 0 -Count 10 -Reverse).displayedItems.code
+(Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -SortBy bytes -Page 0 -Count 10 -Reverse).displayedItems.code
 ```
 
 **Get Location-Statistics for the Location with the most Bytes in the last 1 hour:**
 
 ```powershell
-Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
 ```
 
 **Get overview of Location-Statistics for Location 'DE':**
 
 ```powershell
-Get-MultimeterLocationStatistics -Hostname 'allegro-mm-6cb3' -Location 'DE'
+Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Location 'DE'
 ```
 
 ### Get-MultimeterMacProtocol
@@ -274,13 +274,7 @@ Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
 Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols
 ```
 
-**Get MAC protocols:**
-
-```powershell
-Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols 
-```
-
-### Get-MultimeterMacStatistics
+### Get-MultimeterMacStatistic
 
 Get MAC Statistics
 
@@ -288,73 +282,73 @@ Get MAC Statistics
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -Credential $Credential
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
 
 **Get MAC-Statistics for the MAC with the most Bytes in the last 1 hour:**
 
 ```powershell
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
 ```
 
 **Get overview of IP-Statistics for MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Overview
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Overview
 ```
 
 **Get MAC-Statistics for Protocols for MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Protocols
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Protocols
 ```
 
 **Get Bytes received from for Protocol Youtube for MAC Address 'b4:ea:e4:87:3d:89' during the last 60 seconds:**
 
 ```powershell
-((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Timespan 60 -Protocols -Page 0 -Count 99).displayedItems).where{$_.protocol -eq 'youtube'}
+((Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Timespan 60 -Protocols -Page 0 -Count 99).displayedItems).where{$_.protocol -eq 'youtube'}
 ```
 
 **Get MAC-Statistics for Peers for MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Peers
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Peers
 ```
 
 **Get DHCP Name of the Peer for MAC Address 'b4:ea:e4:87:3d:89' with te most Bytes used:**
 
 ```powershell
-(Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems.dhcpHostName
+(Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems.dhcpHostName
 ```
 
 **Get MAC-Statistics for Connections for MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs
 ```
 
 **Get DNS Name of the Server with the 3rd most Connections to MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-(Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.dnsName
+(Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.dnsName
 ```
 
 **Get MAC-Statistics for Ports for MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -PeerCountries
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -PeerCountries
 ```
 
 **Get MAC-Statistics for Vlans for MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans
+Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans
 ```
 
 **Get MAC-Statistics for Vlans which are not the default VLAN for MAC Address 'b4:ea:e4:87:3d:89':**
 
 ```powershell
-((Get-MultimeterMacStatistics -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
+((Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
 ```
 
 ### Get-MultimeterNotification

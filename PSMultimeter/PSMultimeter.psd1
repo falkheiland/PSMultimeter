@@ -73,11 +73,11 @@
         Get-MultimeterArpStatistic
         Get-MultimeterDhcpStatistic
         Get-MultimeterDisk
-        Get-MultimeterInterfaceStatistics    
-        Get-MultimeterIpStatistics
-        Get-MultimeterLocationStatistics
+        Get-MultimeterInterfaceStatistic
+        Get-MultimeterIpStatistic
+        Get-MultimeterLocationStatistic
         Get-MultimeterMacProtocol
-        Get-MultimeterMacStatistics
+        Get-MultimeterMacStatistic
         Get-MultimeterNotification
         Get-MultimeterPacketSize
         Get-MultimeterStorage

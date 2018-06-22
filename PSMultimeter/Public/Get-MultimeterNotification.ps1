@@ -1,22 +1,22 @@
 function Get-MultimeterNotification
 {
     <#
-    .SYNOPSIS 
+    .SYNOPSIS
     Get notifications of the Allegro Multimeter via RESTAPI.
-    
+
     .DESCRIPTION
     Get notifications of the Allegro Multimeter via RESTAPI.
-    
+
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
-    
+
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
-    
+
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterNotification -Hostname 'allegro-mm-6cb2' -Credential $Credential
-    #Asks for credentail then gets notifications from Allegro Multimeter using provided credential
+    Get-MultimeterNotification -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get notifications from Allegro Multimeter using provided credential
 
     .NOTES
     n.a.
@@ -28,7 +28,7 @@ function Get-MultimeterNotification
         [Parameter(Mandatory)]
         [string]
         $HostName,
-    
+
         [ValidateNotNull()]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.Credential()]
@@ -37,7 +37,7 @@ function Get-MultimeterNotification
         [switch]
         $DateTime
     )
-    
+
     begin
     {
         #Trust self-signed certificates
@@ -56,13 +56,12 @@ function Get-MultimeterNotification
                 }
 '@
         }
-
     }
     process
-    {   
+    {
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-        
+
         $SessionURL = ('https://{0}/API/system/notifications' -f $HostName)
 
         $Username = $Credential.UserName
@@ -77,7 +76,6 @@ function Get-MultimeterNotification
         }
         Invoke-RestMethod @Params
     }
-    
     end
     {
     }
