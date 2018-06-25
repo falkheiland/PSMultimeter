@@ -64,12 +64,14 @@ function Get-MultimeterTcpStatistic
     ((Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -SortByHandshake min -Page 0 -Count 100).displayedItems.where{$_.tcpSynResponseTimes.score -le 3 }).ip
     #Get IP from TCP-Statistics for IP Addresses sorted from 100 by minimal Handshaketime with a tcpSynResponseTimes score from 3 or less (problematic or worse)
 
-
-
-
     .EXAMPLE
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Page 0 -Count 1 -Reverse -Location 'DE'
-    #Get TCP-Statistics for the IP Address with the most Bytes in the last 1 hour from Location Germany
+    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions
+    #Get TCP-Statistics TCP retransmissions
+
+    (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions -SortByRetransmissions txratio -Reverse -Page 0 -Count 1).displayedItems
+    #Get TCP-Statistics for the IP Address with the highest retransmissioned ration
+
+
 
     .EXAMPLE
     Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Overview
@@ -249,7 +251,7 @@ function Get-MultimeterTcpStatistic
             }
             Retransmissions
             {
-                $SessionURL = ('{0}/ipsTCPData?sort={1}&reverse={2}&page={1}&count={2}&timespan={3}' -f $BaseURL,
+                $SessionURL = ('{0}/ipsTCPData?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
                     $SortByRetransmissions, $ReverseString, $Page, $Count, $Timespan)
             }
             InvalidConnections
