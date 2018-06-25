@@ -87,6 +87,7 @@
         Get-MultimeterStorage
         Get-MultimeterStpStatistic
         Get-MultimeterSystemInfo
+        Get-MultimeterTcpStatistic
         Get-MultimeterTime
         Get-MultimeterVlanStatistic
     )
