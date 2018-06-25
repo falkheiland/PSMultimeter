@@ -79,6 +79,7 @@
         Get-MultimeterLocationStatistic
         Get-MultimeterMacProtocol
         Get-MultimeterMacStatistic
+        Get-MultimeterNetbiosStatistic
         Get-MultimeterNotification
         Get-MultimeterPacketSize
         Get-MultimeterStorage

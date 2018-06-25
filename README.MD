@@ -13,6 +13,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterLocationStatistic](#get-multimeterlocationstatistic)
 * [Get-MultimeterMacProtocol](#get-multimetermacprotocol)
 * [Get-MultimeterMacStatistic](#get-multimetermacstatistic)
+* [Get-MultimeterNetbiosStatistic](#get-multimeternetbiosstatistic)
 * [Get-MultimeterNotification](#get-multimeternotification)
 * [Get-MultimeterPacketSize](#get-multimeterpacketsize)
 * [Get-MultimeterStorage](#get-multimeterstorage)
@@ -379,6 +380,23 @@ Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:
 
 ```powershell
 ((Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
+```
+
+### Get-MultimeterNetbiosStatistic
+
+Get NetBIOS Statistics
+
+**Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get names of the first 20 IP Addresses for the last 1 hour:**
+
+```powershell
+(Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
 ```
 
 ### Get-MultimeterNotification
