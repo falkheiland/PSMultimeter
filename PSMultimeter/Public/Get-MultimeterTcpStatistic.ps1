@@ -69,7 +69,7 @@ function Get-MultimeterTcpStatistic
     #Get TCP-Statistics TCP retransmissions
 
     (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions -SortByRetransmissions txratio -Reverse -Page 0 -Count 1).displayedItems
-    #Get TCP-Statistics for the IP Address with the highest retransmissioned ration
+    #Get TCP-Statistics for the IP Address with the highest retransmissioned ratio
 
 
 
