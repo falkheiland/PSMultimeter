@@ -1,11 +1,11 @@
-function Get-MultimeterNetbiosStatistic
+function Get-MultimeterIcmpStatistic
 {
     <#
     .SYNOPSIS
-    Get NetBIOS Statistics for the Allegro Multimeter via RESTAPI.
+    Get ICMP Statistics for the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get NetBIOS Statistics for the Allegro Multimeter via RESTAPI.
+    Get ICMP Statistics for the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
@@ -13,14 +13,8 @@ function Get-MultimeterNetbiosStatistic
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER SortBy
-    Property to sort by ('ip', 'name', 'group')
-
-    .PARAMETER Page
-    Pagenumber
-
-    .PARAMETER Count
-    Number of Items per Page
+    .PARAMETER Details
+    Details ('full')
 
     .PARAMETER Timespan
     Timespan
@@ -30,12 +24,8 @@ function Get-MultimeterNetbiosStatistic
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get NetBIOS-Statistics from Allegro Multimeter using provided credential
-
-    .EXAMPLE
-    (Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
-    #Get names of the first 20 IP Addresses for the last 1 hour
+    Get-MultimeterIcmpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get ICMP Distribution information from ICMP-Statistics from Allegro Multimeter using provided credential
 
     .NOTES
     n.a.
@@ -53,18 +43,15 @@ function Get-MultimeterNetbiosStatistic
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
-        [ValidateSet('ip', 'name', 'group')]
+        [ValidateSet('full')]
         [string]
-        $SortBy = 'ip',
+        $Details = 'full',
 
         [int]
-        $Page = 0,
+        $Timespan = 60,
 
         [int]
-        $Count = 10,
-
-        [int]
-        $Timespan = 60
+        $Values = 60
     )
 
     begin
@@ -91,8 +78,8 @@ function Get-MultimeterNetbiosStatistic
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
 
-        $SessionURL = ('https://{0}/API/stats/modules/netbios/ips?sort={1}&page={2}&count={3}&timespan={4}' -f $HostName,
-            $SortBy, $Page, $Count, $Timespan)
+        $SessionURL = ('https://{0}/API/stats/modules/icmp?detail={1}&timespan={2}&values={3}' -f $HostName,
+            $Details, $Timespan, $Values)
 
         $Username = $Credential.UserName
         $Password = $Credential.GetNetworkCredential().Password

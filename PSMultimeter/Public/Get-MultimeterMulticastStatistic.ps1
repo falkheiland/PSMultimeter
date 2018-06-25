@@ -1,29 +1,29 @@
-function Get-MultimeterMacProtocol
+function Get-MultimeterMulticastStatistic
 {
     <#
     .SYNOPSIS
-    Get MAC protocols of the Allegro Multimeter via RESTAPI.
+    Get Multicast Statistics for the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get MAC protocols of the Allegro Multimeter via RESTAPI.
+    Get Multicast Statistics for the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
-    Ip-Address or Hostname  of the Allegro Multimeter
+    Ip-Address or Hostname of the Allegro Multimeter
 
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER MACAddress
-    MAC-Address to get statistics for
-
     .PARAMETER SortBy
-    Property to sort by ('protocol', bps', 'pps', 'bytes' or 'packets')
+    Property to sort by ('ip', 'multicastActivity', 'activity', 'numberOfClients')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
 
-    .PARAMETER Protocols
-    Switch to get statistics for Protocols
+    .PARAMETER Overall
+    Switch to get statistics for Overall multicast negotiations
+
+    .PARAMETER Groups
+    Switch to get statistics for Groups
 
     .PARAMETER Page
     Pagenumber
@@ -39,23 +39,23 @@ function Get-MultimeterMacProtocol
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get MAC protocols from Allegro Multimeter using provided credential
+    Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get Overall multicast negotiations information from Multicast-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3').globalCounters.allTime
-    #Get all Time counters for MAC protocols
+    Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups
+    #Get Groups information from Multicast-Statistics from Allegro Multimeter
 
     .EXAMPLE
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols
-    #Get MAC protocols
+    (Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups -Page 0 -Count 10 -SortBy numberOfClients -Reverse).displayedItems.ip
+    #Gets IP for the 10 Groups with the most Number of Clients from Multicast-Statistics from Allegro Multimeter
 
     .NOTES
     n.a.
 
     #>
 
-    [CmdletBinding(DefaultParameterSetName = 'Overview')]
+    [CmdletBinding(DefaultParameterSetName = 'Overall')]
     param (
         [Parameter(Mandatory)]
         [string]
@@ -67,32 +67,35 @@ function Get-MultimeterMacProtocol
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
         [string]
-        [Parameter(ParameterSetName = 'MACProtocols')]
-        [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
-        $SortBy = 'protocol',
+        [Parameter(ParameterSetName = 'Groups')]
+        [ValidateSet('ip', 'multicastActivity', 'activity', 'numberOfClients')]
+        $SortBy = 'ip',
 
-        [Parameter(ParameterSetName = 'MACProtocols')]
+        [Parameter(ParameterSetName = 'Groups')]
         [switch]
         $Reverse,
 
-        [Parameter(ParameterSetName = 'MACProtocols')]
+        [Parameter(ParameterSetName = 'Overall')]
         [switch]
-        $Protocols,
+        $Overall,
 
-        [Parameter(ParameterSetName = 'MACProtocols')]
+        [Parameter(ParameterSetName = 'Groups')]
+        [switch]
+        $Groups,
+
+        [Parameter(ParameterSetName = 'Groups')]
         [int]
         $Page = 0,
 
-        [Parameter(ParameterSetName = 'MACProtocols')]
+        [Parameter(ParameterSetName = 'Groups')]
         [int]
         $Count = 5,
 
         [int]
         $Timespan = 60,
 
-        [Parameter(ParameterSetName = 'MACProtocols')]
         [int]
-        $Values = 50
+        $Values = 100
     )
 
     begin
@@ -119,7 +122,7 @@ function Get-MultimeterMacProtocol
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
 
-        $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
+        $BaseURL = ('https://{0}/API/stats/modules/multicast' -f $HostName)
 
         switch ($Reverse)
         {
@@ -135,14 +138,14 @@ function Get-MultimeterMacProtocol
 
         switch ($PsCmdlet.ParameterSetName)
         {
-            Overview
+            Overall
             {
-                $SessionURL = ('{0}/generic?timespan={1}' -f $BaseURL, $Timespan)
+                $SessionURL = ('{0}/generic?timespan={1}&values={2}' -f $BaseURL, $Timespan, $Values)
             }
-            MACProtocols
+            Groups
             {
-                $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
-                    $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
+                $SessionURL = ('{0}/groups_paged?sort={1}&reverse={2}&page={3}&count={4}&values={5}&timespan={6}' -f $BaseURL,
+                    $SortBy, $ReverseString, $Page, $Count, $Values, $Timespan)
             }
         }
 

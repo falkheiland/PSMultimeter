@@ -74,11 +74,13 @@
         Get-MultimeterDhcpStatistic
         Get-MultimeterDisk
         Get-MultimeterDnsStatistic
+        Get-MultimeterIcmpStatistic
         Get-MultimeterInterfaceStatistic
         Get-MultimeterIpStatistic
         Get-MultimeterLocationStatistic
         Get-MultimeterMacProtocol
         Get-MultimeterMacStatistic
+        Get-MultimeterMulticastStatistic
         Get-MultimeterNetbiosStatistic
         Get-MultimeterNotification
         Get-MultimeterPacketSize
