@@ -26,7 +26,7 @@ function Get-MultimeterDhcpStatistic
     Switch to get DHCP servers
 
     .PARAMETER GRT
-    Swicth to get Global response times
+    Switch to get Global response times
 
     .PARAMETER MessageTypes
     Switch to get DHCP message types
@@ -178,27 +178,18 @@ function Get-MultimeterDhcpStatistic
             {
                 $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
                     $SortBy, $ReverseString, $Page, $Count, $Timespan)
-                #Overview
-                #DHCP information
-                #https://allegro-mm-6cb3/API/stats/modules/dhcp/ips_paged?sort=issueTime&reverse=true&page=0&count=10&timespan=60
             }
             DHCPServer
             {
                 $SessionURL = ('{0}/servers?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
-                #DHCP Server
-                #https://allegro-mm-6cb3/API/stats/modules/dhcp/servers?detail=full&timespan=60&values=60
             }
             GRT
             {
                 $SessionURL = ('{0}?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
-                #Global response times and MessageTypes
-                #https://allegro-mm-6cb3/API/stats/modules/dhcp?detail=full&timespan=60&values=60
             }
             MessageTypes
             {
                 $SessionURL = ('{0}?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
-                #Global response times and MessageTypes
-                #https://allegro-mm-6cb3/API/stats/modules/dhcp?detail=full&timespan=60&values=60
             }
         }
 

@@ -1,17 +1,21 @@
 # PSMultimeter
 
-Powershell Module / Tools for the use with the product Multimeter of Allegro Packets (<https://allegro-packets.com/de/>)
+Powershell Module / Tools for the use with the product Multimeter of Allegro Packets (<https://allegro-packets.com/>)
 
 ## Functions
 
 * [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
 * [Get-MultimeterDhcpStatistic](#Get-multimeterdhcpstatistic)
 * [Get-MultimeterDisk](#get-multimeterdisk)
+* [Get-MultimeterDnsStatistic](#get-multimeterdnsstatistic)
+* [Get-MultimeterIcmpStatistic](#get-multimetericmpstatistic)
 * [Get-MultimeterInterfaceStatistic](#get-multimeterinterfacestatistic)
 * [Get-MultimeterIpStatistic](#get-multimeteripstatistic)
 * [Get-MultimeterLocationStatistic](#get-multimeterlocationstatistic)
 * [Get-MultimeterMacProtocol](#get-multimetermacprotocol)
 * [Get-MultimeterMacStatistic](#get-multimetermacstatistic)
+* [Get-MultimeterMulticastStatistic](#get-multimetermulticaststatistic)
+* [Get-MultimeterNetbiosStatistic](#get-multimeternetbiosstatistic)
 * [Get-MultimeterNotification](#get-multimeternotification)
 * [Get-MultimeterPacketSize](#get-multimeterpacketsize)
 * [Get-MultimeterStorage](#get-multimeterstorage)
@@ -118,6 +122,46 @@ Get-MultimeterDisk -Hostname 'allegro-mm-6cb3' -Credential $Credential
 
 ```powershell
 (Get-MultimeterDisk -Hostname 'allegro-mm-6cb3').where{$_.transport -eq 'usb'}
+```
+
+### Get-MultimeterDnsStatistic
+
+Get DNS Statistics
+
+**Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get DNS-names of the first 20 IP Addresses for the last 1 hour:**
+
+```powershell
+(Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
+```
+
+**Get DNS Server information:**
+
+```powershell
+Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -DNSServer
+```
+
+**Get DNS Global response times:**
+
+```powershell
+Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -GRT
+```
+
+### Get-MultimeterIcmpStatistic
+
+Get ICMP Statistics
+
+**Ask for credential then get ICMP Distribution information from ICMP-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterIcmpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
 
 ### Get-MultimeterInterfaceStatistic
@@ -349,6 +393,46 @@ Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:
 
 ```powershell
 ((Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
+```
+
+### Get-MultimeterMulticastStatistic
+
+Get Multicast Statistics
+
+**Ask for credential then get Overall multicast negotiations information from Multicast-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get Groups information from Multicast-Statistics from Allegro Multimeter:**
+
+```powershell
+Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups
+```
+
+**Gets IP for the 10 Groups with the most Number of Clients from Multicast-Statistics from Allegro Multimeter:**
+
+```powershell
+(Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups -Page 0 -Count 10 -SortBy numberOfClients -Reverse).displayedItems.ip
+```
+
+### Get-MultimeterNetbiosStatisic
+
+Get NetBIOS Statistis
+
+**Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get names of the first 20 IP Addresses for the last 1 hour:**
+
+```powershell
+(Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
 ```
 
 ### Get-MultimeterNotification
