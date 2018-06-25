@@ -1,11 +1,11 @@
-function Get-MultimeterDhcpStatistic
+function Get-MultimeterDnsStatistic
 {
     <#
     .SYNOPSIS
-    Get DHCP Statistics for the Allegro Multimeter via RESTAPI.
+    Get DNS Statistics for the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get DHCP Statistics for the Allegro Multimeter via RESTAPI.
+    Get DNS Statistics for the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
@@ -17,19 +17,16 @@ function Get-MultimeterDhcpStatistic
     Details ('full')
 
     .PARAMETER SortBy
-    Property to sort by ('issueTime', 'ip', 'name', 'mac')
+    Property to sort by ('requests', 'ip', 'name', 'dns_server')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
 
-    .PARAMETER DHCPServer
-    Switch to get DHCP servers
+    .PARAMETER DNSServer
+    Switch to get DNS servers
 
     .PARAMETER GRT
     Switch to get Global response times
-
-    .PARAMETER MessageTypes
-    Switch to get DHCP message types
 
     .PARAMETER Page
     Pagenumber
@@ -45,36 +42,27 @@ function Get-MultimeterDhcpStatistic
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get DHCP information from DHCP-Statistics from Allegro Multimeter using provided credential
+    Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.hostName
-    #Get Hostnames of the first 20 IP Addresses for the last 1 hour
+    (Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
+    #Get DNS-names of the first 20 IP Addresses for the last 1 hour
 
     .EXAMPLE
-    Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -DHCPServer
-    #Get DHCP Server information
+    Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -DNSServer
+    #Get DNS Server information
 
     .EXAMPLE
-    Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -GRT
-    #Get DHCP Global response times
-
-    .EXAMPLE
-    Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes
-    #Get DHCP message types
-
-    .EXAMPLE
-    (((Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes).where{$_.name -eq 'request'}) |
-        Select-Object -Property Count).count
-    #Get number of DHCP messages of type 'request'
+    Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -GRT
+    #Get DNS Global response times
 
     .NOTES
     n.a.
 
     #>
 
-    [CmdletBinding(DefaultParameterSetName = 'Overview')]
+    [CmdletBinding(DefaultParameterSetName = 'IPs')]
     param (
         [Parameter(Mandatory)]
         [string]
@@ -86,44 +74,37 @@ function Get-MultimeterDhcpStatistic
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
         [Parameter(ParameterSetName = 'GRT')]
-        [Parameter(ParameterSetName = 'MessageTypes')]
-        [Parameter(ParameterSetName = 'DHCPServer')]
+        [Parameter(ParameterSetName = 'DNSServer')]
         [ValidateSet('full')]
         [string]
         $Details = 'full',
 
         [Parameter(ParameterSetName = 'GRT')]
-        [Parameter(ParameterSetName = 'MessageTypes')]
-        [Parameter(ParameterSetName = 'DHCPServer')]
-        [Parameter(ParameterSetName = 'Overview')]
-        [ValidateSet('issueTime', 'ip', 'name', 'mac')]
+        [Parameter(ParameterSetName = 'DNSServer')]
+        [Parameter(ParameterSetName = 'IPs')]
+        [ValidateSet('requests', 'ip', 'name', 'dns_server')]
         [string]
-        $SortBy = 'issueTime',
+        $SortBy = 'requests',
 
         [Parameter(ParameterSetName = 'GRT')]
-        [Parameter(ParameterSetName = 'MessageTypes')]
-        [Parameter(ParameterSetName = 'DHCPServer')]
-        [Parameter(ParameterSetName = 'Overview')]
+        [Parameter(ParameterSetName = 'DNSServer')]
+        [Parameter(ParameterSetName = 'IPs')]
         [switch]
         $Reverse,
 
-        [Parameter(ParameterSetName = 'DHCPServer')]
+        [Parameter(ParameterSetName = 'DNSServer')]
         [switch]
-        $DHCPServer,
+        $DNSServer,
 
         [Parameter(ParameterSetName = 'GRT')]
         [switch]
         $GRT,
 
-        [Parameter(ParameterSetName = 'MessageTypes')]
-        [switch]
-        $MessageTypes,
-
-        [Parameter(ParameterSetName = 'Overview')]
+        [Parameter(ParameterSetName = 'IPs')]
         [int]
         $Page = 0,
 
-        [Parameter(ParameterSetName = 'Overview')]
+        [Parameter(ParameterSetName = 'IPs')]
         [int]
         $Count = 10,
 
@@ -158,7 +139,7 @@ function Get-MultimeterDhcpStatistic
         #Trust self-signed certificates
         [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
 
-        $BaseURL = ('https://{0}/API/stats/modules/dhcp' -f $HostName)
+        $BaseURL = ('https://{0}/API/stats/modules/dns' -f $HostName)
 
         switch ($Reverse)
         {
@@ -174,20 +155,17 @@ function Get-MultimeterDhcpStatistic
 
         switch ($PsCmdlet.ParameterSetName)
         {
-            Overview
+            IPs
             {
                 $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
                     $SortBy, $ReverseString, $Page, $Count, $Timespan)
             }
-            DHCPServer
+            DNSServer
             {
-                $SessionURL = ('{0}/servers?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
+                $SessionURL = ('{0}/servers_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
+                    $SortBy, $ReverseString, $Page, $Count, $Timespan)
             }
             GRT
-            {
-                $SessionURL = ('{0}?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
-            }
-            MessageTypes
             {
                 $SessionURL = ('{0}?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
             }
@@ -203,21 +181,7 @@ function Get-MultimeterDhcpStatistic
             ContentType = 'application/json; charset=utf-8'
             Method      = 'Get'
         }
-        switch ($PsCmdlet.ParameterSetName)
-        {
-            GRT
-            {
-                (Invoke-RestMethod @Params).globalResponseTimes
-            }
-            MessageTypes
-            {
-                (Invoke-RestMethod @Params).messageTypes
-            }
-            Default
-            {
-                Invoke-RestMethod @Params
-            }
-        }
+        Invoke-RestMethod @Params
     }
     end
     {

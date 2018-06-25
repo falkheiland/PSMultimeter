@@ -7,6 +7,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 * [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
 * [Get-MultimeterDhcpStatistic](#Get-multimeterdhcpstatistic)
 * [Get-MultimeterDisk](#get-multimeterdisk)
+* [Get-MultimeterDnsStatistic](#Get-multimeterdnsstatistic)
 * [Get-MultimeterInterfaceStatistic](#get-multimeterinterfacestatistic)
 * [Get-MultimeterIpStatistic](#get-multimeteripstatistic)
 * [Get-MultimeterLocationStatistic](#get-multimeterlocationstatistic)
@@ -118,6 +119,35 @@ Get-MultimeterDisk -Hostname 'allegro-mm-6cb3' -Credential $Credential
 
 ```powershell
 (Get-MultimeterDisk -Hostname 'allegro-mm-6cb3').where{$_.transport -eq 'usb'}
+```
+
+### Get-MultimeterDnsStatistic
+
+Get DNS Statistics
+
+**Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get DNS-names of the first 20 IP Addresses for the last 1 hour:**
+
+```powershell
+(Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
+```
+
+**Get DNS Server information:**
+
+```powershell
+Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -DNSServer
+```
+
+**Get DNS Global response times:**
+
+```powershell
+Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -GRT
 ```
 
 ### Get-MultimeterInterfaceStatistic

@@ -73,6 +73,7 @@
         Get-MultimeterArpStatistic
         Get-MultimeterDhcpStatistic
         Get-MultimeterDisk
+        Get-MultimeterDnsStatistic
         Get-MultimeterInterfaceStatistic
         Get-MultimeterIpStatistic
         Get-MultimeterLocationStatistic
