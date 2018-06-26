@@ -2,27 +2,50 @@
 
 Powershell Module / Tools for the use with the product Multimeter of Allegro Packets (<https://allegro-packets.com/>)
 
-## Functions
+## Index
 
-* [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
-* [Get-MultimeterDhcpStatistic](#Get-multimeterdhcpstatistic)
+### Diverse
+
+* [Get-MultimeterTime](#get-multimetertime)
 * [Get-MultimeterDisk](#get-multimeterdisk)
-* [Get-MultimeterDnsStatistic](#get-multimeterdnsstatistic)
-* [Get-MultimeterIcmpStatistic](#get-multimetericmpstatistic)
+
+### Interface statistics
+
 * [Get-MultimeterInterfaceStatistic](#get-multimeterinterfacestatistic)
+
+### Generic
+
+* [Get-MultimeterStorage](#get-multimeterstorage)
+
+### Ethernet
+
+* [Get-MultimeterMacStatistic](#get-multimetermacstatistic)
+* [Get-MultimeterPacketSize](#get-multimeterpacketsize)
+* [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
+* [Get-MultimeterVlanStatistic](#get-multimetervlanstatistic)
+* [Get-MultimeterMacProtocol](#get-multimetermacprotocol)
+* [Get-MultimeterStpStatistic](#get-multimeterstpstatistic)
+
+### IP
+
 * [Get-MultimeterIpStatistic](#get-multimeteripstatistic)
 * [Get-MultimeterLocationStatistic](#get-multimeterlocationstatistic)
-* [Get-MultimeterMacProtocol](#get-multimetermacprotocol)
-* [Get-MultimeterMacStatistic](#get-multimetermacstatistic)
-* [Get-MultimeterMulticastStatistic](#get-multimetermulticaststatistic)
+* [Get-MultimeterDhcpStatistic](#Get-multimeterdhcpstatistic)
+* [Get-MultimeterDnsStatistic](#get-multimeterdnsstatistic)
 * [Get-MultimeterNetbiosStatistic](#get-multimeternetbiosstatistic)
-* [Get-MultimeterNotification](#get-multimeternotification)
-* [Get-MultimeterPacketSize](#get-multimeterpacketsize)
-* [Get-MultimeterStorage](#get-multimeterstorage)
-* [Get-MultimeterStpStatistic](#get-multimeterstpstatistic)
+* [Get-MultimeterIcmpStatistic](#get-multimetericmpstatistic)
+* [Get-MultimeterMulticastStatistic](#get-multimetermulticaststatistic)
+
+### Transport
+
+### Application
+
+### Info
+
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
-* [Get-MultimeterTime](#get-multimetertime)
-* [Get-MultimeterVlanStatistic](#get-multimetervlanstatistic)
+* [Get-MultimeterNotification](#get-multimeternotification)
+
+## Functions
 
 ### Get-MultimeterArpStatistic
 
@@ -64,6 +87,8 @@ Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation
 ```powershell
 (Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.ip
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterDhcpStatistic
 
@@ -107,6 +132,8 @@ Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes
 Select-Object -Property Count).count
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterDisk
 
 Get Disk information
@@ -123,6 +150,8 @@ Get-MultimeterDisk -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```powershell
 (Get-MultimeterDisk -Hostname 'allegro-mm-6cb3').where{$_.transport -eq 'usb'}
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterDnsStatistic
 
@@ -153,6 +182,8 @@ Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -DNSServer
 Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -GRT
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterIcmpStatistic
 
 Get ICMP Statistics
@@ -163,6 +194,8 @@ Get ICMP Statistics
 $Credential = Get-Credential -Message 'Enter your credentials'
 Get-MultimeterIcmpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterInterfaceStatistic
 
@@ -180,6 +213,8 @@ Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3' -Credential $Creden
 ```powershell
 ((Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterIpStatistic
 
@@ -266,6 +301,8 @@ $Stats = (Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Global).tcpStat
 'Retransmissions: {0}%' -f [math]::Round(($Stats.globalRetransmissionBytes*100/$Stats.globalTotalBytes),3)
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterLocationStatistic
 
 Get Location Statistics
@@ -295,6 +332,8 @@ Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -Sort
 Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Location 'DE'
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterMacProtocol
 
 Get MAC protocols
@@ -317,6 +356,8 @@ Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```powershell
 Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterMacStatistic
 
@@ -395,6 +436,8 @@ Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:
 ((Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterMulticastStatistic
 
 Get Multicast Statistics
@@ -418,6 +461,8 @@ Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups
 (Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups -Page 0 -Count 10 -SortBy numberOfClients -Reverse).displayedItems.ip
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterNetbiosStatisic
 
 Get NetBIOS Statistis
@@ -435,6 +480,8 @@ Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credenti
 (Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterNotification
 
 Get notifications
@@ -445,6 +492,8 @@ Get notifications
 $Credential = Get-Credential -Message 'Enter your credentials'
 Get-MultimeterNotification -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterPacketSize
 
@@ -463,6 +512,8 @@ Get-MultimeterPacketSize -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ((Get-MultimeterPacketSize -Hostname 'allegro-mm-6cb3').globalCounters.allTime)[6]
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterStorage
 
 Get Storage information
@@ -480,6 +531,8 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential
 (Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential).device.isInUse
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterStpStatistic
 
 Get STP Statistics
@@ -490,6 +543,8 @@ Get STP Statistics
 $Credential = Get-Credential -Message 'Enter your credentials'
 Get-MultimeterStpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterSystemInfo
 
@@ -508,6 +563,8 @@ Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
 [math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
 ```
 
+[Go to Top](#psmultimeter)
+
 ### Get-MultimeterTime
 
 Get current time
@@ -524,6 +581,8 @@ Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```powershell
 Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
 ```
+
+[Go to Top](#psmultimeter)
 
 ### Get-MultimeterVlanStatistic
 
@@ -559,3 +618,5 @@ Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -Vlan 111
 ```powershell
 Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -OuterVlan 111 -InnerVlan -1
 ```
+
+[Go to Top](#psmultimeter)
