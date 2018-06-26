@@ -38,6 +38,8 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 ### Transport
 
+* [Get-MultimeterTcpStatistic](#get-multimetertcpstatistic)
+
 ### Application
 
 ### Info
@@ -561,6 +563,49 @@ Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
 
 ```powershell
 [math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
+```
+
+[Go to Top](#psmultimeter)
+
+### Get-MultimeterTcpStatistic
+
+Get TCP Statistics
+
+**Ask for credential then get TCP-Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get IP from TCP-Statistics for IP Addresses sorted from 100 by minimal Handshaketime with a tcpSynResponseTimes score from 3 or less (problematic or worse):**
+
+```powershell
+((Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -SortByHandshake min -Page 0 -Count 100).displayedItems.where{$_.tcpSynResponseTimes.score -le 3 }).ip
+```
+
+**Get TCP-Statistics TCP retransmissions:**
+
+```powershell
+Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions
+```
+
+**Get TCP-Statistics for the IP Address with the highest retransmissioned ratio:**
+
+```powershell
+(Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions -SortByRetransmissions txratio -Reverse -Page 0 -Count 1).displayedItems
+```
+
+**Get TCP-Statistics TCP Server with invalid connections:**
+
+```powershell
+Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -InvalidConnections
+```
+
+**Get TCP-Statistics for the IP Address with the highest Invalid connections:**
+
+```powershell
+(Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -InvalidConnections -SortByInvalidConnections invalidconnections -Reverse -Page 0 -Count 3).displayedItems
 ```
 
 [Go to Top](#psmultimeter)
