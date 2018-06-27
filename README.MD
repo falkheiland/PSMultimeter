@@ -39,6 +39,7 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 ### Transport
 
 * [Get-MultimeterTcpStatistic](#get-multimetertcpstatistic)
+* [Get-MultimeterL4serverportStatistic](#get-multimeterl4serverportstatistic)
 
 ### Application
 
@@ -301,6 +302,37 @@ Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Global
 ```powershell
 $Stats = (Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Global).tcpStats
 'Retransmissions: {0}%' -f [math]::Round(($Stats.globalRetransmissionBytes*100/$Stats.globalTotalBytes),3)
+```
+
+[Go to Top](#psmultimeter)
+
+### Get-MultimeterL4serverportStatistic
+
+Get L4 Server Port Statistics
+
+**Ask for credential then get L4 Server Port Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get the 3 TCP L4 Server Ports with most bytes transfered:**
+
+```powershell
+(Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -TCP -SortBy bytes -Reverse -Page 0 -Count 3).displayedItems
+```
+
+**Get L4 Server Port Statistics TCP PortStats:**
+
+```powershell
+Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -PortStats -TCPPort 443
+```
+
+**Get the 3 UDP L4 Server Ports with most bytes transfered:**
+
+```powershell
+(Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -UDP -SortBy bytes -Reverse -Page 0 -Count 3).displayedItems
 ```
 
 [Go to Top](#psmultimeter)
