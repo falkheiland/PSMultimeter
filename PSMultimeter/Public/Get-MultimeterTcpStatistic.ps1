@@ -68,52 +68,17 @@ function Get-MultimeterTcpStatistic
     Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions
     #Get TCP-Statistics TCP retransmissions
 
+    .EXAMPLE
     (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions -SortByRetransmissions txratio -Reverse -Page 0 -Count 1).displayedItems
     #Get TCP-Statistics for the IP Address with the highest retransmissioned ratio
 
-
+    .EXAMPLE
+    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -InvalidConnections
+    #Get TCP-Statistics TCP Server with invalid connections
 
     .EXAMPLE
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Overview
-    #Get overview of TCP-Statistics for IP Address '192.168.0.1'
-
-    .EXAMPLE
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Protocols
-    #Get TCP-Statistics for Protocols for IP Address '192.168.0.1'
-
-    .EXAMPLE
-    (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Timespan 60 -Protocols).protocols.Youtube.bytesFrom
-    #Get Bytes received from for Protocol Youtube for IP Address '192.168.0.1' during the last 60 seconds
-
-    .EXAMPLE
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers
-    #Get TCP-Statistics for Peers for IP Address '192.168.0.1'
-
-    .EXAMPLE
-    $Peer = (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems
-    'http://maps.google.com/?ll={0},{1}' -f ($Peer.latitude -replace(',','.')), ($Peer.longitude -replace(',','.'))
-    #Get the Peer for IP Address '192.168.0.1' with te most Bytes used and converts its Geolocation to Google Maps URL
-
-    .EXAMPLE
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections
-    #Get TCP-Statistics for Connections for IP Address '192.168.0.1'
-
-    .EXAMPLE
-    (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.server.dnsName
-    #Get DNS Name of the Server with the 3rd most Connections to IP Address '192.168.0.1'
-
-    .EXAMPLE
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Ports
-    #Get TCP-Statistics for Ports for IP Address '192.168.0.1'
-
-    .EXAMPLE
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Global
-    #Get Global TCP-Statistics
-
-    .EXAMPLE
-    $Stats = (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Global).tcpStats
-    'Retransmissions: {0}%' -f [math]::Round(($Stats.globalRetransmissionBytes*100/$Stats.globalTotalBytes),3)
-    #Get Retransmissions in Percent from Global TCP-Statistics
+    (Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -InvalidConnections -SortByInvalidConnections invalidconnections -Reverse -Page 0 -Count 3).displayedItems
+    #Get TCP-Statistics for the IP Address with the highest Invalid connections
 
     .NOTES
     n.a.
