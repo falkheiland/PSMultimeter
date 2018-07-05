@@ -80,7 +80,7 @@ function Get-MultimeterSslStatistic
 
     .EXAMPLE
     Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Response
-    #Get SSL Gloabl Response Time statistics
+    #Get SSL Response Time statistics
 
     .EXAMPLE
     (Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Response -SortBy min -Page 0 -Count 1).displayedItems.sslHelloResponseTimes.score
