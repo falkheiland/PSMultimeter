@@ -12,7 +12,7 @@
     RootModule        = 'PSMultimeter.psm1'
 
     # Die Versionsnummer dieses Moduls
-    ModuleVersion     = '0.0.2'
+    ModuleVersion     = '0.0.3'
 
     # Unterstützte PSEditions
     # CompatiblePSEditions = @()
@@ -74,6 +74,7 @@
         Get-MultimeterDhcpStatistic
         Get-MultimeterDisk
         Get-MultimeterDnsStatistic
+        Get-MultimeterHttpStatistic
         Get-MultimeterIcmpStatistic
         Get-MultimeterInterfaceStatistic
         Get-MultimeterIpStatistic
