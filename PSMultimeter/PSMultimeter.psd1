@@ -79,6 +79,7 @@
         Get-MultimeterInterfaceStatistic
         Get-MultimeterIpStatistic
         Get-MultimeterL4serverportStatistic
+        Get-MultimeterL7Protocol
         Get-MultimeterLocationStatistic
         Get-MultimeterMacProtocol
         Get-MultimeterMacStatistic
