@@ -13,9 +13,6 @@ function Get-MultimeterHttpStatistic
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER IPAddress
-    IP Address to get statistics for
-
     .PARAMETER SortBy
     Property to sort by ('ip', 'requests', 'avg', 'stddev', 'min', 'max', 'score')
 
