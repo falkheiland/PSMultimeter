@@ -43,6 +43,8 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 
 ### Application
 
+* [Get-MultimeterSslStatistic](#get-multimetersslstatistic)
+
 ### Info
 
 * [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
@@ -497,9 +499,9 @@ Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups
 
 [Go to Top](#psmultimeter)
 
-### Get-MultimeterNetbiosStatisic
+### Get-MultimeterNetbiosStatistic
 
-Get NetBIOS Statistis
+Get NetBIOS Statistics
 
 **Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential:**
 
@@ -563,6 +565,67 @@ Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential
 
 ```powershell
 (Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential).device.isInUse
+```
+
+[Go to Top](#psmultimeter)
+
+### Get-MultimeterSslStatistic
+
+Get SSL Statistics
+
+**Ask for credential then get SSL Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get the Names of the countries with the badest responsetime-score 'BAD':**
+
+```powershell
+(((Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -ServerInfo -Count 10000 -Page 0).displayedItems).where{$_.sslHelloResponseTimes.score -eq 1}).countryName
+```
+
+**Get SSL Statistics for Server with IP '158.85.224.173':**
+
+```powershell
+Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -ServerInfo -IPAddress '54.93.67.167'
+```
+
+**Get 10 most used SSL Server:**
+
+```powershell
+Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -TopRequest
+```
+
+**Get IP Address of the 3 most used SSL Server:**
+
+```powershell
+(Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -TopRequest -Page 0 -Count 3).displayedItems.ip
+```
+
+**Get SSL Gloabl Response Time statistics:**
+
+```powershell
+Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse
+```
+
+**Get average SSL Global Response Time for SSL-Hello-handshakes in ms:**
+
+```powershell
+(Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse).globalHelloResponseTimes.avg
+```
+
+**Get SSL Gloabl Response Time statistics:**
+
+```powershell
+Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Response
+```
+
+**Get SSL-Handshake-score of the SSL-Server with the lowest response time:**
+
+```powershell
+(Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Response -SortBy min -Page 0 -Count 1).displayedItems.sslHelloResponseTimes.score
 ```
 
 [Go to Top](#psmultimeter)

@@ -85,6 +85,7 @@
         Get-MultimeterNetbiosStatistic
         Get-MultimeterNotification
         Get-MultimeterPacketSize
+        Get-MultimeterSslStatistic
         Get-MultimeterStorage
         Get-MultimeterStpStatistic
         Get-MultimeterSystemInfo
