@@ -55,11 +55,11 @@ function Get-MultimeterSslStatistic
     #Ask for credential then get SSL Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (((Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -ServerInfo -Count 10000 -Page 0).displayedItems).where{$_.sslHelloResponseTimes.score -eq 1}).countryName
+    (((Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Server -Count 10000 -Page 0).displayedItems).where{$_.sslHelloResponseTimes.score -eq 1}).countryName
     #Get the Names of the countries with the badest responsetime-score 'BAD'
 
     .EXAMPLE
-    Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -ServerInfo -IPAddress '54.93.67.167'
+    Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Server -IPAddress '54.93.67.167'
     #Get SSL Statistics for Server with IP '158.85.224.173'
 
     .EXAMPLE
@@ -91,7 +91,7 @@ function Get-MultimeterSslStatistic
 
     #>
 
-    [CmdletBinding(DefaultParameterSetName = 'ServerInfo')]
+    [CmdletBinding(DefaultParameterSetName = 'Server')]
     param (
         [Parameter(Mandatory)]
         [string]
@@ -102,29 +102,25 @@ function Get-MultimeterSslStatistic
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
-        [Parameter(ParameterSetName = 'ServerInfo')]
+        [Parameter(ParameterSetName = 'Server')]
         [ValidateScript( {$_ -match [IPAddress]$_})]
         [string]
         $IPAddress = '0.0.0.0',
 
-        [Parameter(ParameterSetName = 'ServerInfo')]
-        [ValidateSet('ip')]
-        [string]
-        $SortByInfo = 'ip',
-
+        [Parameter(ParameterSetName = 'Server')]
         [Parameter(ParameterSetName = 'Response')]
         [ValidateSet('ip', 'requests', 'avg', 'stddev', 'min', 'max', 'score')]
         [string]
-        $SortBy = 'score',
+        $SortBy = 'ip',
 
-        [Parameter(ParameterSetName = 'ServerInfo')]
+        [Parameter(ParameterSetName = 'Server')]
         [Parameter(ParameterSetName = 'Response')]
         [switch]
         $Reverse,
 
-        [Parameter(ParameterSetName = 'ServerInfo')]
+        [Parameter(ParameterSetName = 'Server')]
         [switch]
-        $ServerInfo,
+        $Server,
 
         [Parameter(ParameterSetName = 'TopRequest')]
         [switch]
@@ -138,13 +134,13 @@ function Get-MultimeterSslStatistic
         [switch]
         $Response,
 
-        [Parameter(ParameterSetName = 'ServerInfo')]
+        [Parameter(ParameterSetName = 'Server')]
         [Parameter(ParameterSetName = 'Response')]
         [Parameter(ParameterSetName = 'TopRequest')]
         [int]
         $Page = 0,
 
-        [Parameter(ParameterSetName = 'ServerInfo')]
+        [Parameter(ParameterSetName = 'Server')]
         [Parameter(ParameterSetName = 'Response')]
         [Parameter(ParameterSetName = 'TopRequest')]
         [int]
@@ -198,12 +194,12 @@ function Get-MultimeterSslStatistic
 
         switch ($PsCmdlet.ParameterSetName)
         {
-            ServerInfo
+            Server
             {
                 if ($IPAddress -eq '0.0.0.0')
                 {
                     $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
-                        $SortByInfo, $ReverseString, $Page, $Count, $Timespan)
+                        $SortBy, $ReverseString, $Page, $Count, $Timespan)
                 }
                 else
                 {
