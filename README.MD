@@ -44,6 +44,8 @@ Powershell Module / Tools for the use with the product Multimeter of Allegro Pac
 ### Application
 
 * [Get-MultimeterSslStatistic](#get-multimetersslstatistic)
+* [Get-MultimeterHttpStatistic](#get-multimeterhttpstatistic)
+* [Get-MultimeterL7Protocol](#get-multimeterl7protocol)
 
 ### Info
 
@@ -186,6 +188,65 @@ Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -DNSServer
 ```powershell
 Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -GRT
 ```
+
+[Go to Top](#psmultimeter)
+
+### Get-MultimeterHttpStatistic
+
+Get HTTP Statistics
+
+**Ask for credential then get HTTP Server Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+```
+
+**Get the HTTP Host Names of the all  the HTTP Server from Contry United States:**
+
+```powershell
+(((Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -SortBy score -Server -Count 10000 -Page 0).displayedItems).where{$_.countryCode -eq 'US'}).httpHostNames
+```
+
+**Get 10 most used HTTP Server:**
+
+```powershell
+Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -TopRequest
+```
+
+**Get IP Address of the 3 most used (requests) SSL Server:**
+
+```powershell
+(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -TopRequest -Page 0 -Count 3).displayedItems.ip
+```
+
+**Get HTTP Gloabl Response Time statistics:**
+
+```powershell
+Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse
+```
+
+**Get average HTTP Global Response Time in ms:**
+
+```powershell
+(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse).globalResponseTimes.avg
+```
+
+**Get number of HTTP Global Response Code for Server Errors:**
+
+```powershell
+(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse).globalResponseCodes.code5xx
+```
+
+**Get HTTP Response Time statistics:**
+
+```powershell
+Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -Response
+```
+
+**Get score of the HTTP-Server with the lowest response time:**
+
+(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -Response -SortBy min -Page 0 -Count 1).displayedItems.responseTimes.score
 
 [Go to Top](#psmultimeter)
 
@@ -335,6 +396,31 @@ Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -PortStats -TCPP
 
 ```powershell
 (Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -UDP -SortBy bytes -Reverse -Page 0 -Count 3).displayedItems
+```
+
+[Go to Top](#psmultimeter)
+
+### Get-MultimeterL7Protocol
+
+Get L7 Protocols
+
+**Ask for credential then get L7 Protocol Statistics from Allegro Multimeter using provided credential:**
+
+```powershell
+$Credential = Get-Credential -Message 'Enter your credentials'
+```
+
+**Get names and Transfered GB from the Top 10 L7 Protocols by bytes:**
+
+```powershell
+$Protocol = (Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -SortBy bytes -Reverse -Count 10 -Page 0).displayedItems
+$Protocol.foreach{'Protocol: {0}  - Transfered: {1} GB' -f $_.name, [math]::Round((($_.allTime[1])/1000000000),2)}
+```
+
+**Get L7 Protocol statistics for Protocol SMB:**
+
+```powershell
+((Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -Count 10000 -Page 0).displayedItems).where{$_.name -eq 'SMB'}
 ```
 
 [Go to Top](#psmultimeter)
