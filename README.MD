@@ -408,6 +408,7 @@ Get L7 Protocols
 
 ```powershell
 $Credential = Get-Credential -Message 'Enter your credentials'
+Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
 ```
 
 **Get names and Transfered GB from the Top 10 L7 Protocols by bytes:**

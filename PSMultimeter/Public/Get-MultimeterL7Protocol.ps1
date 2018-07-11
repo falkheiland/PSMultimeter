@@ -33,6 +33,7 @@ function Get-MultimeterL7Protocol
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
+    Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
     #Ask for credential then get L7 Protocol Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
