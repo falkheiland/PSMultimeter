@@ -41,41 +41,13 @@ function Get-MultimeterDisk
 
     begin
     {
-        #Trust self-signed certificates
-        Add-Type -AssemblyName Microsoft.PowerShell.Commands.Utility
-        if (!('TrustAllCertsPolicy' -as [type]))
-        {
-            Add-Type -TypeDefinition @'
-            using System.Net;
-            using System.Security.Cryptography.X509Certificates;
-            public class TrustAllCertsPolicy : ICertificatePolicy {
-                public bool CheckValidationResult(
-                    ServicePoint srvPoint, X509Certificate certificate,
-                    WebRequest request, int certificateProblem) {
-                        return true;
-                    }
-                }
-'@
-        }
     }
     process
     {
-        #Trust self-signed certificates
-        [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-
-        $SessionURL = ('https://{0}/API/system/disks' -f $HostName)
-
-        $Username = $Credential.UserName
-        $Password = $Credential.GetNetworkCredential().Password
-        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $Username, $Password)))
-
-        $Params = @{
-            Uri         = $SessionURL
-            Headers     = @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
-            ContentType = 'application/json; charset=utf-8'
-            Method      = 'Get'
-        }
-        Invoke-RestMethod @Params
+        Invoke-MultimeterTrustSelfSignedCertificate
+        $BaseURL = ('https://{0}/API/system/disks' -f $HostName)
+        $SessionURL = ('{0}' -f $BaseURL)
+        Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end
     {

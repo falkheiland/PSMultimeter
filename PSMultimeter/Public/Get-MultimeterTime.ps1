@@ -47,41 +47,13 @@ function Get-MultimeterTime
 
     begin
     {
-        #Trust self-signed certificates
-        Add-Type -AssemblyName Microsoft.PowerShell.Commands.Utility
-        if (!('TrustAllCertsPolicy' -as [type]))
-        {
-            Add-Type -TypeDefinition @'
-            using System.Net;
-            using System.Security.Cryptography.X509Certificates;
-            public class TrustAllCertsPolicy : ICertificatePolicy {
-                public bool CheckValidationResult(
-                    ServicePoint srvPoint, X509Certificate certificate,
-                    WebRequest request, int certificateProblem) {
-                        return true;
-                    }
-                }
-'@
-        }
     }
     process
     {
-        #Trust self-signed certificates
-        [Net.ServicePointManager]::CertificatePolicy = New-Object -TypeName TrustAllCertsPolicy
-
-        $SessionURL = ('https://{0}/API/stats/time' -f $HostName)
-
-        $Username = $Credential.UserName
-        $Password = $Credential.GetNetworkCredential().Password
-        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $Username, $Password)))
-
-        $Params = @{
-            Uri         = $SessionURL
-            Headers     = @{Authorization = ("Basic {0}" -f $base64AuthInfo)}
-            ContentType = 'application/json; charset=utf-8'
-            Method      = 'Get'
-        }
-        $MultimeterTime = Invoke-RestMethod @Params
+        Invoke-MultimeterTrustSelfSignedCertificate
+        $BaseURL = ('https://{0}/API/stats/time' -f $HostName)
+        $SessionURL = ('{0}' -f $BaseURL)
+        $MultimeterTime = Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
         switch ($DateTime)
         {
             $false
@@ -90,7 +62,7 @@ function Get-MultimeterTime
             }
             $true
             {
-                [timezone]::CurrentTimeZone.ToLocalTime(([datetime]'1/1/1970').AddSeconds([math]::Round(($MultimeterTime.currentTime) / 1000)))
+                Get-MultimeterNTTime -Time $MultimeterTime.currentTime
             }
         }
     }

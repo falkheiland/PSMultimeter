@@ -12,7 +12,7 @@
     RootModule        = 'PSMultimeter.psm1'
 
     # Die Versionsnummer dieses Moduls
-    ModuleVersion     = '0.0.3'
+    ModuleVersion     = '0.0.4'
 
     # Unterstützte PSEditions
     # CompatiblePSEditions = @()
@@ -24,7 +24,7 @@
     Author            = 'Falk Heiland'
 
     # Company or vendor of this module
-    CompanyName       = 'BFW Leipzig gGmbH'
+    CompanyName       = ''
 
     # Urheberrechtserklärung für dieses Modul
     Copyright         = '(c) 2018 Falk Heiland. Alle Rechte vorbehalten.'
@@ -70,30 +70,30 @@
 
     # Aus diesem Modul zu exportierende Funktionen. Um optimale Leistung zu erzielen, verwenden Sie keine Platzhalter und löschen den Eintrag nicht. Verwenden Sie ein leeres Array, wenn keine zu exportierenden Funktionen vorhanden sind.
     FunctionsToExport = @(
-        Get-MultimeterArpStatistic
-        Get-MultimeterDhcpStatistic
-        Get-MultimeterDisk
-        Get-MultimeterDnsStatistic
-        Get-MultimeterHttpStatistic
-        Get-MultimeterIcmpStatistic
-        Get-MultimeterInterfaceStatistic
-        Get-MultimeterIpStatistic
-        Get-MultimeterL4serverportStatistic
-        Get-MultimeterL7Protocol
-        Get-MultimeterLocationStatistic
-        Get-MultimeterMacProtocol
-        Get-MultimeterMacStatistic
-        Get-MultimeterMulticastStatistic
-        Get-MultimeterNetbiosStatistic
-        Get-MultimeterNotification
-        Get-MultimeterPacketSize
-        Get-MultimeterSslStatistic
-        Get-MultimeterStorage
-        Get-MultimeterStpStatistic
-        Get-MultimeterSystemInfo
-        Get-MultimeterTcpStatistic
-        Get-MultimeterTime
-        Get-MultimeterVlanStatistic
+        'Get-MultimeterArpStatistic'
+        'Get-MultimeterDhcpStatistic'
+        'Get-MultimeterDisk'
+        'Get-MultimeterDnsStatistic'
+        'Get-MultimeterHttpStatistic'
+        'Get-MultimeterIcmpStatistic'
+        'Get-MultimeterInterfaceStatistic'
+        'Get-MultimeterIpStatistic'
+        'Get-MultimeterL4serverportStatistic'
+        'Get-MultimeterL7Protocol'
+        'Get-MultimeterLocationStatistic'
+        'Get-MultimeterMacProtocol'
+        'Get-MultimeterMacStatistic'
+        'Get-MultimeterMulticastStatistic'
+        'Get-MultimeterNetbiosStatistic'
+        'Get-MultimeterNotification'
+        'Get-MultimeterPacketSize'
+        'Get-MultimeterSslStatistic'
+        'Get-MultimeterStorage'
+        'Get-MultimeterStpStatistic'
+        'Get-MultimeterSystemInfo'
+        'Get-MultimeterTcpStatistic'
+        'Get-MultimeterTime'
+        'Get-MultimeterVlanStatistic'
     )
 
     # Aus diesem Modul zu exportierende Cmdlets. Um optimale Leistung zu erzielen, verwenden Sie keine Platzhalter und löschen den Eintrag nicht. Verwenden Sie ein leeres Array, wenn keine zu exportierenden Cmdlets vorhanden sind.
