@@ -12,7 +12,7 @@
     RootModule        = 'PSMultimeter.psm1'
 
     # Die Versionsnummer dieses Moduls
-    ModuleVersion     = '0.0.4'
+    ModuleVersion     = '0.1.5'
 
     # Unterstützte PSEditions
     # CompatiblePSEditions = @()
@@ -87,6 +87,11 @@
         'Get-MultimeterNetbiosStatistic'
         'Get-MultimeterNotification'
         'Get-MultimeterPacketSize'
+        'Get-MultimeterSmbClient'
+        'Get-MultimeterSmbConnection'
+        'Get-MultimeterSmbOverview'
+        'Get-MultimeterSmbServer'
+        'Get-MultimeterSmbShare'
         'Get-MultimeterSslStatistic'
         'Get-MultimeterStorage'
         'Get-MultimeterStpStatistic'
