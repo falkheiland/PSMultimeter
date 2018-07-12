@@ -76,6 +76,7 @@
         'Get-MultimeterDnsStatistic'
         'Get-MultimeterHttpStatistic'
         'Get-MultimeterIcmpStatistic'
+        'Get-MultimeterInfo'
         'Get-MultimeterInterfaceStatistic'
         'Get-MultimeterIpStatistic'
         'Get-MultimeterL4serverportStatistic'
@@ -86,6 +87,7 @@
         'Get-MultimeterMulticastStatistic'
         'Get-MultimeterNetbiosStatistic'
         'Get-MultimeterNotification'
+        'Get-MultimeterNtpStatistic'
         'Get-MultimeterPacketSize'
         'Get-MultimeterSmbClient'
         'Get-MultimeterSmbConnection'
@@ -95,10 +97,13 @@
         'Get-MultimeterSslStatistic'
         'Get-MultimeterStorage'
         'Get-MultimeterStpStatistic'
-        'Get-MultimeterSystemInfo'
+        'Get-MultimeterSystemHealth'
+        'Get-MultimeterSystemState'
+        'Get-MultimeterSystemUser'
         'Get-MultimeterTcpStatistic'
         'Get-MultimeterTime'
         'Get-MultimeterVlanStatistic'
+        'Get-MultimeterVoipCodec'
     )
 
     # Aus diesem Modul zu exportierende Cmdlets. Um optimale Leistung zu erzielen, verwenden Sie keine Platzhalter und löschen den Eintrag nicht. Verwenden Sie ein leeres Array, wenn keine zu exportierenden Cmdlets vorhanden sind.

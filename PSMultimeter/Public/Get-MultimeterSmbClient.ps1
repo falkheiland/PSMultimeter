@@ -34,7 +34,7 @@ function Get-MultimeterSmbClient
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
     Get-MultimeterSmbClient -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get Yyy from Xxx form Allegro Multimeter using provided credential
+    #Ask for credential then get Yyy from Xxx from Allegro Multimeter using provided credential
 
     .EXAMPLE
     (((Get-MultimeterSmbClient -Hostname 'allegro-mm-6cb3' -Count 999).displayedItems).where{$_.usedDialects.name -match '^SMB 1.+'}).ip

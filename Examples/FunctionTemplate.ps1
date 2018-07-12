@@ -2,10 +2,10 @@ function Get-MultimeterXxxYyy
 {
     <#
     .SYNOPSIS
-    Get SMB Statistics for the Allegro Multimeter via RESTAPI.
+    Get Xxx Yyy from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get SMB Statistics for the Allegro Multimeter via RESTAPI.
+    Get Xxx Yyy from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -37,7 +37,7 @@ function Get-MultimeterXxxYyy
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
     Get-MultimeterXxxYyy -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get Yyy from Xxx form Allegro Multimeter using provided credential
+    #Ask for credential then get Yyy from Xxx from Allegro Multimeter using provided credential
 
     .EXAMPLE
     (Get-MultimeterXxxYyy -Hostname 'allegro-mm-6cb3').displayedItems

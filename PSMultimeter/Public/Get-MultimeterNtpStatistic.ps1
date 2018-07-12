@@ -1,11 +1,11 @@
-function Get-MultimeterSmbShare
+function Get-MultimeterNtpStatistic
 {
     <#
     .SYNOPSIS
-    Get SMB Shares from the Allegro Multimeter via RESTAPI.
+    Get SMB Statistics for the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get SMB Shares from the Allegro Multimeter via RESTAPI.
+    Get SMB Statistics for the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -14,16 +14,10 @@ function Get-MultimeterSmbShare
     Credentials for the Allegro Multimeter
 
     .PARAMETER SortBy
-    Property to sort by ('ip', 'name', 'connects', 'disconnects')
+    Property to sort by ('ip', 'activity', 'li', 'vn', 'poll', 'stratum', 'precision', 'rootDelay', 'rootDispersion', 'numberOfClients')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
-
-    .PARAMETER DNSServer
-    Switch to get DNS servers
-
-    .PARAMETER GRT
-    Switch to get Global response times
 
     .PARAMETER Page
     Pagenumber
@@ -39,12 +33,12 @@ function Get-MultimeterSmbShare
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterSmbShare -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get Yyy from Xxx from Allegro Multimeter using provided credential
+    Get-MultimeterNtpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get NTP Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    (Get-MultimeterSmbShare -Hostname 'allegro-mm-6cb3' -SortBy 'connects' -Reverse -Page 0 -Count 3 -Timespan 3600).displayedItems.share
-    #Get UNC-Path of 3 most connected SMB shares in the last hour
+    (Get-MultimeterNtpStatistic -Hostname 'allegro-mm-6cb3'-SortBy activity -Reverse -Count 3).displayedItems.dnsName
+    #Get DNS names form the 3 NTP server which were last activ
 
     .NOTES
     n.a.
@@ -62,7 +56,7 @@ function Get-MultimeterSmbShare
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
-        [ValidateSet('ip', 'name', 'connects', 'disconnects')]
+        [ValidateSet('ip', 'activity', 'li', 'vn', 'poll', 'stratum', 'precision', 'rootDelay', 'rootDispersion', 'numberOfClients')]
         [string]
         $SortBy = 'ip',
 
@@ -89,8 +83,8 @@ function Get-MultimeterSmbShare
     {
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/smb' -f $HostName)
-        $SessionURL = ('{0}/shares?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
+        $BaseURL = ('https://{0}/API/stats/modules/ntp' -f $HostName)
+        $SessionURL = ('{0}?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
             $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
