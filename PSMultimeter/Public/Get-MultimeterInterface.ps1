@@ -1,4 +1,4 @@
-function Get-MultimeterInterfaceStatistic
+function Get-MultimeterInterface
 {
     <#
     .SYNOPSIS
@@ -21,11 +21,11 @@ function Get-MultimeterInterfaceStatistic
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    Get-MultimeterInterface -Hostname 'allegro-mm-6cb3' -Credential $Credential
     #Ask for credential then get interface statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    ((Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
+    ((Get-MultimeterInterface -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
     #Get interface statistics from Allegro Multimeter for interfaces that are connected
 
     .NOTES

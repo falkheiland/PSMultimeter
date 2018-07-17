@@ -87,7 +87,7 @@
         'Get-MultimeterHttpGlobalResponseCode'
         'Get-MultimeterIcmp'
         'Get-MultimeterInfoSystem'
-        'Get-MultimeterInterfaceStatistic'
+        'Get-MultimeterInterface'
         'Get-MultimeterIpStatistic'
         'Get-MultimeterL4serverportStatistic'
         'Get-MultimeterL7Protocol'
