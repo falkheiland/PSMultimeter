@@ -1,4 +1,4 @@
-function Get-MultimeterIcmpStatistic
+function Get-MultimeterIcmp
 {
     <#
     .SYNOPSIS
@@ -24,7 +24,7 @@ function Get-MultimeterIcmpStatistic
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterIcmpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    Get-MultimeterIcmp -Hostname 'allegro-mm-6cb3' -Credential $Credential
     #Ask for credential then get ICMP Distribution information from ICMP-Statistics from Allegro Multimeter using provided credential
 
     .NOTES
