@@ -1,4 +1,4 @@
-function Get-MultimeterL7Protocol
+function Get-MultimeterDpi
 {
     <#
     .SYNOPSIS
@@ -33,16 +33,16 @@ function Get-MultimeterL7Protocol
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    Get-MultimeterDpi -Hostname 'allegro-mm-6cb3' -Credential $Credential
     #Ask for credential then get L7 Protocol Statistics from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    $Protocol = (Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -SortBy bytes -Reverse -Count 10 -Page 0).displayedItems
+    $Protocol = (Get-MultimeterDpi -Hostname 'allegro-mm-6cb3' -SortBy bytes -Reverse -Count 10 -Page 0).displayedItems
     $Protocol.foreach{'Protocol: {0}  - Transfered: {1} GB' -f $_.name, [math]::Round((($_.allTime[1])/1000000000),2)}
     #Get names and Transfered GB from the Top 10 L7 Protocols by bytes
 
     .EXAMPLE
-    ((Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -Count 10000 -Page 0).displayedItems).where{$_.name -eq 'SMB'}
+    ((Get-MultimeterDpi -Hostname 'allegro-mm-6cb3' -Count 10000 -Page 0).displayedItems).where{$_.name -eq 'SMB'}
     #Get L7 Protocol statistics for Protocol SMB
 
     .NOTES

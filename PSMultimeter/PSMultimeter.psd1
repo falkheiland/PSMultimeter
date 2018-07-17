@@ -98,7 +98,7 @@
         'Get-MultimeterL4PortTcp'
         'Get-MultimeterL4PortTcpOverview'
         'Get-MultimeterL4PortUdp'
-        'Get-MultimeterL7Protocol'
+        'Get-MultimeterDpi'
         'Get-MultimeterLocationStatistic'
         'Get-MultimeterMacProtocol'
         'Get-MultimeterMacStatistic'
