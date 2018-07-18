@@ -133,7 +133,10 @@
         'Get-MultimeterTcpRetransmission'
         'Get-MultimeterTcpStatistic'
         'Get-MultimeterTime'
-        'Get-MultimeterVlanStatistic'
+        'Get-MultimeterVlan'
+        'Get-MultimeterVlanInner'
+        'Get-MultimeterVlanOuterInner'
+        'Get-MultimeterVlanOverview'
         'Get-MultimeterVoipCodec'
     )
 
