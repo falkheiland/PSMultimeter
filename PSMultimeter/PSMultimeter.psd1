@@ -101,6 +101,7 @@
         'Get-MultimeterDpi'
         'Get-MultimeterLocation'
         'Get-MultimeterLocationOverview'
+        'Get-MultimeterMacProtocolOverview'
         'Get-MultimeterMacProtocol'
         'Get-MultimeterMacStatistic'
         'Get-MultimeterMulticastStatistic'
