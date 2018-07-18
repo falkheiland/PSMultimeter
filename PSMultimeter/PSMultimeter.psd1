@@ -129,6 +129,8 @@
         'Get-MultimeterSystemHealth'
         'Get-MultimeterSystemState'
         'Get-MultimeterSystemUser'
+        'Get-MultimeterTcpInvalidConnection'
+        'Get-MultimeterTcpRetransmission'
         'Get-MultimeterTcpStatistic'
         'Get-MultimeterTime'
         'Get-MultimeterVlanStatistic'
