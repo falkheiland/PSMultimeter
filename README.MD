@@ -2,848 +2,167 @@
 
 Powershell Module / Tools for the use with the product Multimeter of Allegro Packets (<https://allegro-packets.com/>)
 
-## Index
+## Interface stats
 
-### Diverse
+* Get-MultimeterInterface
 
-* [Get-MultimeterTime](#get-multimetertime)
-* [Get-MultimeterDisk](#get-multimeterdisk)
+## Generic
 
-### Interface statistics
+### Storage
 
-* [Get-MultimeterInterfaceStatistic](#get-multimeterinterfacestatistic)
+* Get-MultimeterStorage
 
-### Generic
+## Ethernet
 
-* [Get-MultimeterStorage](#get-multimeterstorage)
+### MAC Statistics
 
-### Ethernet
+* Get-MultimeterMacAddress
+* Get-MultimeterMacAddressCountry
+* Get-MultimeterMacAddressOverview
+* Get-MultimeterMacAddressPeer
+* Get-MultimeterMacAddressProtocol
+* Get-MultimeterMacAddressVlan
 
-* [Get-MultimeterMacStatistic](#get-multimetermacstatistic)
-* [Get-MultimeterPacketSize](#get-multimeterpacketsize)
-* [Get-MultimeterArpStatistic](#get-multimeterarpstatistic)
-* [Get-MultimeterVlanStatistic](#get-multimetervlanstatistic)
-* [Get-MultimeterMacProtocol](#get-multimetermacprotocol)
-* [Get-MultimeterStpStatistic](#get-multimeterstpstatistic)
+### Packet size distribution
 
-### IP
+* Get-MultimeterPacketSize
 
-* [Get-MultimeterIpStatistic](#get-multimeteripstatistic)
-* [Get-MultimeterLocationStatistic](#get-multimeterlocationstatistic)
-* [Get-MultimeterDhcpStatistic](#Get-multimeterdhcpstatistic)
-* [Get-MultimeterDnsStatistic](#get-multimeterdnsstatistic)
-* [Get-MultimeterNetbiosStatistic](#get-multimeternetbiosstatistic)
-* [Get-MultimeterIcmpStatistic](#get-multimetericmpstatistic)
-* [Get-MultimeterMulticastStatistic](#get-multimetermulticaststatistic)
+### ARP Statistics
 
-### Transport
+* Get-MultimeterArpIp
+* Get-MultimeterArpMac
+* Get-MultimeterArpOverview
 
-* [Get-MultimeterTcpStatistic](#get-multimetertcpstatistic)
-* [Get-MultimeterL4serverportStatistic](#get-multimeterl4serverportstatistic)
+### VLAN
 
-### Application
+* Get-MultimeterVlan
+* Get-MultimeterVlanInner
+* Get-MultimeterVlanOuterInner
+* Get-MultimeterVlanOverview
 
-* [Get-MultimeterSslStatistic](#get-multimetersslstatistic)
-* [Get-MultimeterHttpStatistic](#get-multimeterhttpstatistic)
-* [Get-MultimeterL7Protocol](#get-multimeterl7protocol)
+### MAC Protocol Statistics
 
-### Info
+* Get-MultimeterMacProtocol
+* Get-MultimeterMacProtocolOverview
 
-* [Get-MultimeterSystemInfo](#get-multimetersysteminfo)
-* [Get-MultimeterNotification](#get-multimeternotification)
+### STP Statistics
 
-## Functions
+* Get-MultimeterStpStatistic
 
-### Get-MultimeterArpStatistic
+## IP
 
-Get Arp Statistics
+### IP Statistics
 
-**Ask for credential then get Arp-Statistics from Allegro Multimeter using provided credential:**
+* Get-MultimeterIpAddress
+* Get-MultimeterIpAddressConnection
+* Get-MultimeterIpAddressOverview
+* Get-MultimeterIpAddressPeer
+* Get-MultimeterIpAddressProtocol
+* Get-MultimeterIpAddressTcpPort
+* Get-MultimeterIpGlobalStatistic
 
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
+### Geolocation
 
-**Get Arp-Statistics for the last 1 hour:**
+* Get-MultimeterLocation
+* Get-MultimeterLocationOverview
 
-```powershell
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600
-```
+### DHCP Statistics
 
-**Get ARP MAC information:**
+* Get-MultimeterDhcpGlobalMessageType
+* Get-MultimeterDhcpGlobalResponseTime
+* Get-MultimeterDhcpOverview
+* Get-MultimeterDhcpServer
 
-```powershell
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -MACInformation
-```
+### DNS Statistics
 
-**Get MAC Address for the Host with most bytes in the last hour:**
+* Get-MultimeterDisk
+* Get-MultimeterDnsIp
+* Get-MultimeterDnsResponseTime
+* Get-MultimeterDnsServer
 
-```powershell
-(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -MACInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.mac
-```
+### NetBIOS Statistics
 
-**Get ARP MAC information:**
+* Get-MultimeterNetbiosStatistic
 
-```powershell
-Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation
-```
+### ICMP Statistics
 
-**Get IP Address for the Host with most bytes in the last hour:**
+* Get-MultimeterIcmp
 
-```powershell
-(Get-MultimeterArpStatistic -Hostname 'allegro-mm-6cb3' -IPInformation -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.ip
-```
+### Multicast Statistics
 
-[Go to Top](#psmultimeter)
+* Get-MultimeterMulticastGroup
+* Get-MultimeterMulticastOverview
 
-### Get-MultimeterDhcpStatistic
+## Transport
 
-Get DHCP Statistics
+### TCP Statistics
 
-**Ask for credential then get DHCP information from DHCP-Statistics from Allegro Multimeter using provided credential:**
+* Get-MultimeterTcpInvalidConnection
+* Get-MultimeterTcpRetransmission
+* Get-MultimeterTcpStatistic
 
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
+### L4 Server Ports
 
-**Get Hostnames of the first 20 IP Addresses for the last 1 hour:**
+* Get-MultimeterL4PortTcp
+* Get-MultimeterL4PortTcpOverview
+* Get-MultimeterL4PortUdp
 
-```powershell
-(Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.hostName
-```
+## Application
 
-**Get DHCP Server information:**
+### SSL Statistics
 
-```powershell
-Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -DHCPServer
-```
+* Get-MultimeterSslGlobalResponseTime
+* Get-MultimeterSslResponse
+* Get-MultimeterSslServer
+* Get-MultimeterSslTop
 
-**Get DHCP Global response times:**
+### HTTP Statistics
 
-```powershell
-Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -GRT
-```
+* Get-MultimeterHttpGlobalResponseCode
+* Get-MultimeterHttpGlobalResponseTime
+* Get-MultimeterHttpResponse
+* Get-MultimeterHttpServer
 
-**Get DHCP message types:**
+### Layer 7 protocols
 
-```powershell
-Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes
-```
+* Get-MultimeterDpi
 
-**Get number of DHCP messages of type 'request':**
+### SMB Statistics
 
-```powershell
-(((Get-MultimeterDhcpStatistic -Hostname 'allegro-mm-6cb3' -MessageTypes).where{$_.name -eq 'request'}) |
-Select-Object -Property Count).count
-```
+* Get-MultimeterSmbClient
+* Get-MultimeterSmbConnection
+* Get-MultimeterSmbOverview
+* Get-MultimeterSmbServer
+* Get-MultimeterSmbShare
 
-[Go to Top](#psmultimeter)
+### NTP Statistics
 
-### Get-MultimeterDisk
+* Get-MultimeterNtpStatistic
 
-Get Disk information
+### RTP Statistics
 
-**Ask for credential then get disks from Allegro Multimeter using provided credential:**
+* Get-MultimeterVoipCodec
 
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterDisk -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
+## Info
 
-**Get disks from Allegro Multimeter that are connected via USB:**
+### System Info
 
-```powershell
-(Get-MultimeterDisk -Hostname 'allegro-mm-6cb3').where{$_.transport -eq 'usb'}
-```
+* Get-MultimeterInfoSystem
+* Get-MultimeterSystemHealth
+* Get-MultimeterSystemState
 
-[Go to Top](#psmultimeter)
+### Status
 
-### Get-MultimeterDnsStatistic
+* Get-MultimeterNotification
 
-Get DNS Statistics
+## Settings
 
-**Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential:**
+### Global settings
 
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
+* Get-MultimeterTime
 
-**Get DNS-names of the first 20 IP Addresses for the last 1 hour:**
+### User Management
 
-```powershell
-(Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
-```
-
-**Get DNS Server information:**
-
-```powershell
-Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -DNSServer
-```
-
-**Get DNS Global response times:**
-
-```powershell
-Get-MultimeterDnsStatistic -Hostname 'allegro-mm-6cb3' -GRT
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterHttpStatistic
-
-Get HTTP Statistics
-
-**Ask for credential then get HTTP Server Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get the HTTP Host Names of the all  the HTTP Server from Contry United States:**
-
-```powershell
-(((Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -SortBy score -Server -Count 10000 -Page 0).displayedItems).where{$_.countryCode -eq 'US'}).httpHostNames
-```
-
-**Get 10 most used HTTP Server:**
-
-```powershell
-Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -TopRequest
-```
-
-**Get IP Address of the 3 most used (requests) SSL Server:**
-
-```powershell
-(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -TopRequest -Page 0 -Count 3).displayedItems.ip
-```
-
-**Get HTTP Gloabl Response Time statistics:**
-
-```powershell
-Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse
-```
-
-**Get average HTTP Global Response Time in ms:**
-
-```powershell
-(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse).globalResponseTimes.avg
-```
-
-**Get number of HTTP Global Response Code for Server Errors:**
-
-```powershell
-(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse).globalResponseCodes.code5xx
-```
-
-**Get HTTP Response Time statistics:**
-
-```powershell
-Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -Response
-```
-
-**Get score of the HTTP-Server with the lowest response time:**
-
-(Get-MultimeterHttpStatistic -Hostname 'allegro-mm-6cb3' -Response -SortBy min -Page 0 -Count 1).displayedItems.responseTimes.score
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterIcmpStatistic
-
-Get ICMP Statistics
-
-**Ask for credential then get ICMP Distribution information from ICMP-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterIcmpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterInterfaceStatistic
-
-Get interface statistics
-
-**Ask for credential then interface statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get interface statistics from Allegro Multimeter for interfaces that are connected:**
-
-```powershell
-((Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterIpStatistic
-
-Get IP statistics
-
-**Ask for credential then get IP-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get IP-Statistics for the IP Address with the most Bytes in the last 1 hour:**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
-```
-
-**Get IP-Statistics for the IP Address with the most Bytes in the last 1 hour from Location Germany:**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Page 0 -Count 1 -Reverse -Location 'DE'
-```
-
-**Get overview of IP-Statistics for IP Address '192.168.0.1':**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Overview
-```
-
-**Get IP-Statistics for Protocols for IP Address '192.168.0.1':**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Protocols
-```
-
-**Get Bytes received from for Protocol Youtube for IP Address '192.168.0.1' during the last 60 seconds :**
-
-```powershell
-(Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Timespan 60 -Protocols).protocols.Youtube.bytesFrom
-```
-
-**Get IP-Statistics for Peers for IP Address '192.168.0.1':**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers
-```
-
-**Get the Peer for IP Address '192.168.0.1' with te most Bytes used and converts its Geolocation to Google Maps URL:**
-
-```powershell
-$Peer = (Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems
-'http://maps.google.com/?ll={0},{1}' -f ($Peer.latitude -replace(',','.')), ($Peer.longitude -replace(',','.'))
-```
-
-**Get IP-Statistics for Connections for IP Address '192.168.0.1':**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections
-```
-
-**Get DNS Name of the Server with the 3rd most Connections to IP Address '192.168.0.1':**
-
-```powershell
-(Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Connections -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.server.dnsName
-```
-
-**Get IP-Statistics for Ports for IP Address '192.168.0.1':**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -IPAddress '192.168.0.1' -Ports
-```
-
-**Get Global IP-Statistics::**
-
-```powershell
-Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Global
-```
-
-**Get Retransmissions in Percent from Global IP-Statistics**:
-
-```powershell
-$Stats = (Get-MultimeterIpStatistic -Hostname 'allegro-mm-6cb3' -Global).tcpStats
-'Retransmissions: {0}%' -f [math]::Round(($Stats.globalRetransmissionBytes*100/$Stats.globalTotalBytes),3)
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterL4serverportStatistic
-
-Get L4 Server Port Statistics
-
-**Ask for credential then get L4 Server Port Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get the 3 TCP L4 Server Ports with most bytes transfered:**
-
-```powershell
-(Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -TCP -SortBy bytes -Reverse -Page 0 -Count 3).displayedItems
-```
-
-**Get L4 Server Port Statistics TCP PortStats:**
-
-```powershell
-Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -PortStats -TCPPort 443
-```
-
-**Get the 3 UDP L4 Server Ports with most bytes transfered:**
-
-```powershell
-(Get-MultimeterL4serverportStatistic -Hostname 'allegro-mm-6cb3' -UDP -SortBy bytes -Reverse -Page 0 -Count 3).displayedItems
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterL7Protocol
-
-Get L7 Protocols
-
-**Ask for credential then get L7 Protocol Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get names and Transfered GB from the Top 10 L7 Protocols by bytes:**
-
-```powershell
-$Protocol = (Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -SortBy bytes -Reverse -Count 10 -Page 0).displayedItems
-$Protocol.foreach{'Protocol: {0}  - Transfered: {1} GB' -f $_.name, [math]::Round((($_.allTime[1])/1000000000),2)}
-```
-
-**Get L7 Protocol statistics for Protocol SMB:**
-
-```powershell
-((Get-MultimeterL7Protocol -Hostname 'allegro-mm-6cb3' -Count 10000 -Page 0).displayedItems).where{$_.name -eq 'SMB'}
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterLocationStatistic
-
-Get Location Statistics
-
-**Ask for credential then get Location-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get Code for the 10 Locations with most Bytes:**
-
-```powershell
-(Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -SortBy bytes -Page 0 -Count 10 -Reverse).displayedItems.code
-```
-
-**Get Location-Statistics for the Location with the most Bytes in the last 1 hour:**
-
-```powershell
-Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
-```
-
-**Get overview of Location-Statistics for Location 'DE':**
-
-```powershell
-Get-MultimeterLocationStatistic -Hostname 'allegro-mm-6cb3' -Location 'DE'
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterMacProtocol
-
-Get MAC protocols
-
-**Ask for credentail then get MAC protocols from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get all Time counters for MAC protocols:**
-
-```powershell
-(Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3').globalCounters.allTime
-```
-
-**Get MAC protocols:**
-
-```powershell
-Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Protocols
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterMacStatistic
-
-Get MAC Statistics
-
-**Ask for credential then get MAC-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get MAC-Statistics for the MAC with the most Bytes in the last 1 hour:**
-
-```powershell
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600 -SortBy Bytes -Count 1 -Reverse
-```
-
-**Get overview of IP-Statistics for MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Overview
-```
-
-**Get MAC-Statistics for Protocols for MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Protocols
-```
-
-**Get Bytes received from for Protocol Youtube for MAC Address 'b4:ea:e4:87:3d:89' during the last 60 seconds:**
-
-```powershell
-((Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Timespan 60 -Protocols -Page 0 -Count 99).displayedItems).where{$_.protocol -eq 'youtube'}
-```
-
-**Get MAC-Statistics for Peers for MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Peers
-```
-
-**Get DHCP Name of the Peer for MAC Address 'b4:ea:e4:87:3d:89' with te most Bytes used:**
-
-```powershell
-(Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Peers -SortBy Bytes -Reverse -Count 1).displayedItems.dhcpHostName
-```
-
-**Get MAC-Statistics for Connections for MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs
-```
-
-**Get DNS Name of the Server with the 3rd most Connections to MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-(Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -ActiveIPs -SortBy Bytes -Reverse -Page 3 -Count 1).displayedItems.dnsName
-```
-
-**Get MAC-Statistics for Ports for MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -PeerCountries
-```
-
-**Get MAC-Statistics for Vlans for MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans
-```
-
-**Get MAC-Statistics for Vlans which are not the default VLAN for MAC Address 'b4:ea:e4:87:3d:89':**
-
-```powershell
-((Get-MultimeterMacStatistic -Hostname 'allegro-mm-6cb3' -MACAddress 'b4:ea:e4:87:3d:89' -Vlans).displayedItems).Where{$_.outerVlanTag -ne '-1'}
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterMulticastStatistic
-
-Get Multicast Statistics
-
-**Ask for credential then get Overall multicast negotiations information from Multicast-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get Groups information from Multicast-Statistics from Allegro Multimeter:**
-
-```powershell
-Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups
-```
-
-**Gets IP for the 10 Groups with the most Number of Clients from Multicast-Statistics from Allegro Multimeter:**
-
-```powershell
-(Get-MultimeterMulticastStatistic -Hostname 'allegro-mm-6cb3' -Groups -Page 0 -Count 10 -SortBy numberOfClients -Reverse).displayedItems.ip
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterNetbiosStatistic
-
-Get NetBIOS Statistics
-
-**Ask for credential then get DNS information from DNS-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get names of the first 20 IP Addresses for the last 1 hour:**
-
-```powershell
-(Get-MultimeterNetbiosStatistic -Hostname 'allegro-mm-6cb3' -SortBy 'ip' -Page 0 -Count 20 -Timespan 3600).displayedItems.name
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterNotification
-
-Get notifications
-
-**Ask for credentail then get notifications from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterNotification -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterPacketSize
-
-Get packet size (distribution)
-
-**Ask for credential then get packet size (distribution) from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterPacketSize -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get all time packet count from Allegro Multimeter for packet size 1519-1522 bytes:**
-
-```powershell
-((Get-MultimeterPacketSize -Hostname 'allegro-mm-6cb3').globalCounters.allTime)[6]
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterStorage
-
-Get Storage information
-
-**Ask for credential then get storgae from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get storage from Allegro Multimeter and checks if it is in use:**
-
-```powershell
-(Get-MultimeterStorage -Hostname 'allegro-mm-6cb3' -Credential $Credential).device.isInUse
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterSslStatistic
-
-Get SSL Statistics
-
-**Ask for credential then get SSL Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get the Names of the countries with the badest responsetime-score 'BAD':**
-
-```powershell
-(((Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -ServerInfo -Count 10000 -Page 0).displayedItems).where{$_.sslHelloResponseTimes.score -eq 1}).countryName
-```
-
-**Get SSL Statistics for Server with IP '158.85.224.173':**
-
-```powershell
-Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -ServerInfo -IPAddress '54.93.67.167'
-```
-
-**Get 10 most used SSL Server:**
-
-```powershell
-Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -TopRequest
-```
-
-**Get IP Address of the 3 most used SSL Server:**
-
-```powershell
-(Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -TopRequest -Page 0 -Count 3).displayedItems.ip
-```
-
-**Get SSL Gloabl Response Time statistics:**
-
-```powershell
-Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse
-```
-
-**Get average SSL Global Response Time for SSL-Hello-handshakes in ms:**
-
-```powershell
-(Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -GlobalResponse).globalHelloResponseTimes.avg
-```
-
-**Get SSL Gloabl Response Time statistics:**
-
-```powershell
-Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Response
-```
-
-**Get SSL-Handshake-score of the SSL-Server with the lowest response time:**
-
-```powershell
-(Get-MultimeterSslStatistic -Hostname 'allegro-mm-6cb3' -Response -SortBy min -Page 0 -Count 1).displayedItems.sslHelloResponseTimes.score
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterStpStatistic
-
-Get STP Statistics
-
-**Ask for credential then get STP statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterStpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterSystemInfo
-
-Get System Info
-
-**Ask for credential then get system info from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get uptime in days from Allegro Multimeter:**
-
-```powershell
-[math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterTcpStatistic
-
-Get TCP Statistics
-
-**Ask for credential then get TCP-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get IP from TCP-Statistics for IP Addresses sorted from 100 by minimal Handshaketime with a tcpSynResponseTimes score from 3 or less (problematic or worse):**
-
-```powershell
-((Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -SortByHandshake min -Page 0 -Count 100).displayedItems.where{$_.tcpSynResponseTimes.score -le 3 }).ip
-```
-
-**Get TCP-Statistics TCP retransmissions:**
-
-```powershell
-Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions
-```
-
-**Get TCP-Statistics for the IP Address with the highest retransmissioned ratio:**
-
-```powershell
-(Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Retransmissions -SortByRetransmissions txratio -Reverse -Page 0 -Count 1).displayedItems
-```
-
-**Get TCP-Statistics TCP Server with invalid connections:**
-
-```powershell
-Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -InvalidConnections
-```
-
-**Get TCP-Statistics for the IP Address with the highest Invalid connections:**
-
-```powershell
-(Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -InvalidConnections -SortByInvalidConnections invalidconnections -Reverse -Page 0 -Count 3).displayedItems
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterTime
-
-Get current time
-
-**Ask for credential then get time from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get time from Allegro Multimeter and converts it to .NET Time (DateTime-Format):**
-
-```powershell
-Get-MultimeterTime -Hostname 'allegro-mm-6cb3' -DateTime
-```
-
-[Go to Top](#psmultimeter)
-
-### Get-MultimeterVlanStatistic
-
-Get Vlan Statistics
-
-**Ask for credential then get Vlan-Statistics from Allegro Multimeter using provided credential:**
-
-```powershell
-$Credential = Get-Credential -Message 'Enter your credentials'
-Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-```
-
-**Get Vlan-Statistics for the last 1 hour and shows bytes for VLAN 1:**
-
-```powershell
-(((Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -Timespan 3600).displayedItems).where{$_.outerVlanTag -eq -1}).bytes
-```
-
-**Get VLAN Q-inQ statistics:**
-
-```powershell
-Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -VLANQinQ
-```
-
-**Get statistics for outer VLAN '111':**
-
-```powershell
-Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -Vlan 111
-```
-
-**Get statistics for outer VLAN '111', no inner VLAN (-1):**
-
-```powershell
-Get-MultimeterVlanStatistic -Hostname 'allegro-mm-6cb3' -OuterVlan 111 -InnerVlan -1
-```
+* Get-MultimeterSystemUser
 
 [Go to Top](#psmultimeter)

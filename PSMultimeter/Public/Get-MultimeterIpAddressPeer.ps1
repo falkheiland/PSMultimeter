@@ -1,11 +1,11 @@
-function Get-MultimeterTcpStatistic
+function Get-MultimeterIpAddressPeer
 {
     <#
     .SYNOPSIS
-    Get TCP statistics from the Allegro Multimeter via RESTAPI.
+    Get Peers for IP Address from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get TCP statistics from the Allegro Multimeter via RESTAPI.
+    Get Peers for IP Address from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -13,32 +13,34 @@ function Get-MultimeterTcpStatistic
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
+    .PARAMETER IPAddress
+    Ip-Address to get statistics for
+
     .PARAMETER SortBy
-    Property to sort by ('ip', 'requests', 'avg', 'stddev', 'min', 'max', 'score')
+    Property to sort by ('ip', 'firstActivity', 'activity', 'packets', 'bytes', 'pps', 'bps')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
-
-    .PARAMETER History
-    Switch, Skip History Data, Default True
 
     .PARAMETER Page
     Pagenumber
 
     .PARAMETER Count
     Number of Items per Page
-
+    
     .PARAMETER Timespan
     Timespan
 
-    .EXAMPLE
-    $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get TCP statistics from Allegro Multimeter using provided credential
+    .PARAMETER Values
+    Values
 
     .EXAMPLE
-    ((Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -SortBy min -Page 0 -Count 100).displayedItems.where{$_.tcpSynResponseTimes.score -le 3 }).ip
-    #Get IP from TCP-Statistics for IP Addresses sorted from 100 by minimal Handshaketime with a tcpSynResponseTimes score from 3 or less (problematic or worse)
+    $Credential = Get-Credential -Message 'Enter your credentials'
+    Get-MultimeterIpAddressPeer -Hostname 'allegro-mm-6cb3' -IPAddress '10.11.11.1' -Credential $Credential
+    #Ask for credential then get Peers for IP Address from Allegro Multimeter using provided credential
+
+    (Get-MultimeterIpAddressPeer -Hostname 'allegro-mm-6cb3' -IPAddress '10.11.11.1' -SortBy Bytes -Reverse -Count 1).displayedItems
+    #Get the Peer for IP Address '192.168.0.1' with te most Bytes used
 
     .NOTES
     n.a.
@@ -56,25 +58,29 @@ function Get-MultimeterTcpStatistic
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
-        [ValidateSet('ip', 'requests', 'avg', 'stddev', 'min', 'max', 'score')]
+        [Parameter(Mandatory)]
+        [ValidateScript( {$_ -match [IPAddress]$_})]
+        [string]
+        $IPAddress,
+
+        [ValidateSet('ip', 'firstActivity', 'activity', 'packets', 'bytes', 'pps', 'bps')]
         [string]
         $SortBy = 'ip',
 
         [switch]
         $Reverse,
 
-        [Parameter(ParameterSetName = 'Handshake')]
-        [switch]
-        $History,
-
         [int]
         $Page = 0,
 
         [int]
-        $Count = 10,
+        $Count = 5,
 
         [int]
-        $Timespan = 60
+        $Timespan = 60,
+
+        [int]
+        $Values = 100
     )
 
     begin
@@ -85,9 +91,8 @@ function Get-MultimeterTcpStatistic
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
         $BaseURL = ('https://{0}/API/stats/modules/ip' -f $HostName)
-        $HistoryString = Get-MultimeterSwitchString -Value $History
-        $SessionURL = ('{0}/ipsTCP?sort={1}&reverse={2}&page={3}&count={4}&skiphistorydata={5}&timespan={6}' -f $BaseURL,
-            $SortBy, $ReverseString, $Page, $Count, $HistoryString, $Timespan)
+        $SessionURL = ('{0}/ips/{1}/peers?sort={2}&reverse={3}&page={4}&count={5}&timespan={6}&values={7}' -f $BaseURL,
+            $IPAddress, $SortBy, $ReverseString, $Page, $Count, $Timespan, $Value)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end

@@ -1,11 +1,11 @@
-function Get-MultimeterMacProtocol
+function Get-MultimeterDnsServer
 {
     <#
     .SYNOPSIS
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get DNS Servers from DNS Statistics from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get DNS Servers from DNS Statistics from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -13,11 +13,8 @@ function Get-MultimeterMacProtocol
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER Details
-    Details ('full')
-
     .PARAMETER SortBy
-    Property to sort by ('protocol', bps', 'pps', 'bytes' or 'packets')
+    Property to sort by ('requests', 'ip', 'name', 'dns_server')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
@@ -31,13 +28,14 @@ function Get-MultimeterMacProtocol
     .PARAMETER Timespan
     Timespan
 
-    .PARAMETER Values
-    Values
-
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get MAC Protocols from Allegro Multimeter using provided credential
+    Get-MultimeterDnsServer -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get DNS Servers from DNS Statistics from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    (Get-MultimeterDnsServer -Hostname 'allegro-mm-6cb3' -Reverse -Count 1).displayedItems.allTime[0]
+    #Get number of responses for the Server with the most responses
 
     .NOTES
     n.a.
@@ -59,9 +57,9 @@ function Get-MultimeterMacProtocol
         [string]
         $Details = 'full',
 
-        [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
+        [ValidateSet('requests', 'ip', 'name', 'dns_server')]
         [string]
-        $SortBy = 'protocol',
+        $SortBy = 'requests',
 
         [switch]
         $Reverse,
@@ -73,10 +71,7 @@ function Get-MultimeterMacProtocol
         $Count = 5,
 
         [int]
-        $Timespan = 60,
-
-        [int]
-        $Values = 60
+        $Timespan = 60
     )
 
     begin
@@ -86,9 +81,9 @@ function Get-MultimeterMacProtocol
     {
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
-        $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
-            $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
+        $BaseURL = ('https://{0}/API/stats/modules/dns' -f $HostName)
+        $SessionURL = ('{0}/servers_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
+            $SortBy, $ReverseString, $Page, $Count, $Timespan)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end

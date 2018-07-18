@@ -1,11 +1,11 @@
-function Get-MultimeterMacProtocol
+function Get-MultimeterDhcpServer
 {
     <#
     .SYNOPSIS
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get DHCP servers from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get DHCP servers from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -17,7 +17,7 @@ function Get-MultimeterMacProtocol
     Details ('full')
 
     .PARAMETER SortBy
-    Property to sort by ('protocol', bps', 'pps', 'bytes' or 'packets')
+    Property to sort by ('aaa', 'bbb', 'ccc', 'ddd')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
@@ -36,8 +36,8 @@ function Get-MultimeterMacProtocol
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get MAC Protocols from Allegro Multimeter using provided credential
+    Get-MultimeterDhcpServer -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get Yyy from Xxx from Allegro Multimeter using provided credential
 
     .NOTES
     n.a.
@@ -59,19 +59,6 @@ function Get-MultimeterMacProtocol
         [string]
         $Details = 'full',
 
-        [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
-        [string]
-        $SortBy = 'protocol',
-
-        [switch]
-        $Reverse,
-
-        [int]
-        $Page = 0,
-
-        [int]
-        $Count = 5,
-
         [int]
         $Timespan = 60,
 
@@ -85,10 +72,8 @@ function Get-MultimeterMacProtocol
     process
     {
         Invoke-MultimeterTrustSelfSignedCertificate
-        $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
-        $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
-            $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
+        $BaseURL = ('https://{0}/API/stats/modules/dhcp' -f $HostName)
+        $SessionURL = ('{0}/servers?detail={1}&timespan={2}&values={3}' -f $BaseURL, $Details, $Timespan, $Values)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end

@@ -1,26 +1,26 @@
-function Get-MultimeterSystemInfo
+function Get-MultimeterSystemHealth
 {
     <#
     .SYNOPSIS
-    Get System Info of the Allegro Multimeter via RESTAPI.
+    Get System Status from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get System Info of the Allegro Multimeter via RESTAPI.
+    Get System Status from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
-    Ip-Address or Hostname of the Allegro Multimeter
+    IP-Address or Hostname of the Allegro Multimeter
 
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get system info from Allegro Multimeter using provided credential
+    Get-MultimeterSystemHealth -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get system state from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    [math]::Round((((Get-MultimeterSystemInfo -Hostname 'allegro-mm-6cb3').uptimeSec)/86400),2)
-    #Get uptime in days from Allegro Multimeter
+    (Get-MultimeterSystemHealth -Hostname 'allegro-mm-6cb3').CPU.CurrentTemp
+    #Get CPU temperature of the Allegro Multimeter in degree celsius
 
     .NOTES
     n.a.
@@ -45,7 +45,7 @@ function Get-MultimeterSystemInfo
     process
     {
         Invoke-MultimeterTrustSelfSignedCertificate
-        $BaseURL = ('https://{0}/API/info/system' -f $HostName)
+        $BaseURL = ('https://{0}/API/system/health' -f $HostName)
         $SessionURL = ('{0}' -f $BaseURL)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }

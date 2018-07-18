@@ -1,11 +1,11 @@
-function Get-MultimeterMacProtocol
+function Get-MultimeterArpMac
 {
     <#
     .SYNOPSIS
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get Arp statistics MAC addresses from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get Arp statistics MAC addresses from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -13,11 +13,8 @@ function Get-MultimeterMacProtocol
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER Details
-    Details ('full')
-
     .PARAMETER SortBy
-    Property to sort by ('protocol', bps', 'pps', 'bytes' or 'packets')
+    Property to sort by ('bps', 'pps', 'bytes', 'packets')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
@@ -31,13 +28,14 @@ function Get-MultimeterMacProtocol
     .PARAMETER Timespan
     Timespan
 
-    .PARAMETER Values
-    Values
-
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get MAC Protocols from Allegro Multimeter using provided credential
+    Get-MultimeterArpMac -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get Arp statistics MAC addresses from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    (Get-MultimeterArpMac -Hostname 'allegro-mm-6cb3' -SortBy bytes -Reverse -Page 0 -Count 1 -Timespan 60).displayedItems.mac
+    #Get MAC Address for the Host with most bytes in the last hour
 
     .NOTES
     n.a.
@@ -55,13 +53,9 @@ function Get-MultimeterMacProtocol
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
-        [ValidateSet('full')]
+        [ValidateSet('bps', 'pps', 'bytes', 'packets')]
         [string]
-        $Details = 'full',
-
-        [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
-        [string]
-        $SortBy = 'protocol',
+        $SortBy = 'bytes',
 
         [switch]
         $Reverse,
@@ -70,13 +64,10 @@ function Get-MultimeterMacProtocol
         $Page = 0,
 
         [int]
-        $Count = 5,
+        $Count = 10,
 
         [int]
-        $Timespan = 60,
-
-        [int]
-        $Values = 60
+        $Timespan = 60
     )
 
     begin
@@ -86,9 +77,9 @@ function Get-MultimeterMacProtocol
     {
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
-        $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
-            $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
+        $BaseURL = ('https://{0}/API/stats/modules/arp' -f $HostName)
+        $SessionURL = ('{0}/macs?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
+            $SortBy, $ReverseString, $Page, $Count, $Timespan)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end

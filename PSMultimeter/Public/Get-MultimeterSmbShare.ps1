@@ -1,11 +1,11 @@
-function Get-MultimeterMacProtocol
+function Get-MultimeterSmbShare
 {
     <#
     .SYNOPSIS
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get SMB Shares from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get SMB Shares from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -13,14 +13,17 @@ function Get-MultimeterMacProtocol
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER Details
-    Details ('full')
-
     .PARAMETER SortBy
-    Property to sort by ('protocol', bps', 'pps', 'bytes' or 'packets')
+    Property to sort by ('ip', 'name', 'connects', 'disconnects')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
+
+    .PARAMETER DNSServer
+    Switch to get DNS servers
+
+    .PARAMETER GRT
+    Switch to get Global response times
 
     .PARAMETER Page
     Pagenumber
@@ -36,8 +39,12 @@ function Get-MultimeterMacProtocol
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get MAC Protocols from Allegro Multimeter using provided credential
+    Get-MultimeterSmbShare -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get Yyy from Xxx from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    (Get-MultimeterSmbShare -Hostname 'allegro-mm-6cb3' -SortBy 'connects' -Reverse -Page 0 -Count 3 -Timespan 3600).displayedItems.share
+    #Get UNC-Path of 3 most connected SMB shares in the last hour
 
     .NOTES
     n.a.
@@ -55,13 +62,9 @@ function Get-MultimeterMacProtocol
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
-        [ValidateSet('full')]
+        [ValidateSet('ip', 'name', 'connects', 'disconnects')]
         [string]
-        $Details = 'full',
-
-        [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
-        [string]
-        $SortBy = 'protocol',
+        $SortBy = 'ip',
 
         [switch]
         $Reverse,
@@ -70,13 +73,13 @@ function Get-MultimeterMacProtocol
         $Page = 0,
 
         [int]
-        $Count = 5,
+        $Count = 10,
 
         [int]
         $Timespan = 60,
 
         [int]
-        $Values = 60
+        $Values = 50
     )
 
     begin
@@ -86,8 +89,8 @@ function Get-MultimeterMacProtocol
     {
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
-        $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
+        $BaseURL = ('https://{0}/API/stats/modules/smb' -f $HostName)
+        $SessionURL = ('{0}/shares?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
             $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }

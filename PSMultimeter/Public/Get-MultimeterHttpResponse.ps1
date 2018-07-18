@@ -1,11 +1,11 @@
-function Get-MultimeterTcpStatistic
+function Get-MultimeterHttpResponse
 {
     <#
     .SYNOPSIS
-    Get TCP statistics from the Allegro Multimeter via RESTAPI.
+    Get Xxx Yyy from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get TCP statistics from the Allegro Multimeter via RESTAPI.
+    Get Xxx Yyy from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -19,9 +19,6 @@ function Get-MultimeterTcpStatistic
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
 
-    .PARAMETER History
-    Switch, Skip History Data, Default True
-
     .PARAMETER Page
     Pagenumber
 
@@ -33,12 +30,12 @@ function Get-MultimeterTcpStatistic
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get TCP statistics from Allegro Multimeter using provided credential
+    Get-MultimeterHttpResponse -Hostname 'allegro-mm-6cb3' -SortBy 'requests' -Reverse -Credential $Credential
+    #Ask for credential then get most accessed HTTP servers from Allegro Multimeter using provided credential
 
     .EXAMPLE
-    ((Get-MultimeterTcpStatistic -Hostname 'allegro-mm-6cb3' -SortBy min -Page 0 -Count 100).displayedItems.where{$_.tcpSynResponseTimes.score -le 3 }).ip
-    #Get IP from TCP-Statistics for IP Addresses sorted from 100 by minimal Handshaketime with a tcpSynResponseTimes score from 3 or less (problematic or worse)
+    (Get-MultimeterHttpResponse -Hostname 'allegro-mm-6cb3' -SortBy min -Page 0 -Count 1).displayedItems.responseTimes.score
+    #Get score of the HTTP-Server with the lowest response time
 
     .NOTES
     n.a.
@@ -63,10 +60,6 @@ function Get-MultimeterTcpStatistic
         [switch]
         $Reverse,
 
-        [Parameter(ParameterSetName = 'Handshake')]
-        [switch]
-        $History,
-
         [int]
         $Page = 0,
 
@@ -84,10 +77,9 @@ function Get-MultimeterTcpStatistic
     {
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/ip' -f $HostName)
-        $HistoryString = Get-MultimeterSwitchString -Value $History
-        $SessionURL = ('{0}/ipsTCP?sort={1}&reverse={2}&page={3}&count={4}&skiphistorydata={5}&timespan={6}' -f $BaseURL,
-            $SortBy, $ReverseString, $Page, $Count, $HistoryString, $Timespan)
+        $BaseURL = ('https://{0}/API/stats/modules/http' -f $HostName)
+        $SessionURL = ('{0}/response-stats?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}' -f $BaseURL,
+            $SortBy, $ReverseString, $Page, $Count, $Timespan)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end

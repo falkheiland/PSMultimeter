@@ -1,11 +1,11 @@
-function Get-MultimeterMacProtocol
+function Get-MultimeterMulticastGroup
 {
     <#
     .SYNOPSIS
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get Multicast Groups from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get Multicast Groups from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -13,11 +13,8 @@ function Get-MultimeterMacProtocol
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
 
-    .PARAMETER Details
-    Details ('full')
-
     .PARAMETER SortBy
-    Property to sort by ('protocol', bps', 'pps', 'bytes' or 'packets')
+    Property to sort by ('ip', 'multicastActivity', 'activity', 'numberOfClients')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
@@ -36,8 +33,12 @@ function Get-MultimeterMacProtocol
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get MAC Protocols from Allegro Multimeter using provided credential
+    Get-MultimeterMulticastGroup -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get Multicast Groups from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    (Get-MultimeterMulticastGroup -Hostname 'allegro-mm-6cb3' -Page 0 -Count 10 -SortBy numberOfClients -Reverse).displayedItems.ip
+    #Gets IP for the 10 Groups with the most Number of Clients from Multicast-Statistics from Allegro Multimeter
 
     .NOTES
     n.a.
@@ -55,13 +56,9 @@ function Get-MultimeterMacProtocol
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
-        [ValidateSet('full')]
+        [ValidateSet('ip', 'multicastActivity', 'activity', 'numberOfClients')]
         [string]
-        $Details = 'full',
-
-        [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
-        [string]
-        $SortBy = 'protocol',
+        $SortBy = 'ip',
 
         [switch]
         $Reverse,
@@ -76,7 +73,7 @@ function Get-MultimeterMacProtocol
         $Timespan = 60,
 
         [int]
-        $Values = 60
+        $Values = 50
     )
 
     begin
@@ -86,9 +83,9 @@ function Get-MultimeterMacProtocol
     {
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
-        $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
-            $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
+        $BaseURL = ('https://{0}/API/stats/modules/multicast' -f $HostName)
+        $SessionURL = ('{0}/groups_paged?sort={1}&reverse={2}&page={3}&count={4}&values={5}&timespan={6}' -f $BaseURL,
+            $SortBy, $ReverseString, $Page, $Count, $Values, $Timespan)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end

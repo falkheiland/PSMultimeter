@@ -1,11 +1,11 @@
-function Get-MultimeterMacProtocol
+function Get-MultimeterTcpInvalidConnection
 {
     <#
     .SYNOPSIS
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get TCP Server with invalid connections from the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get MAC Protocols from the Allegro Multimeter via RESTAPI.
+    Get TCP Server with invalid connections from the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     IP-Address or Hostname of the Allegro Multimeter
@@ -17,10 +17,13 @@ function Get-MultimeterMacProtocol
     Details ('full')
 
     .PARAMETER SortBy
-    Property to sort by ('protocol', bps', 'pps', 'bytes' or 'packets')
+    Property to sort by ('invalidfactortcp', 'invalidconnections', 'validconnections')
 
     .PARAMETER Reverse
     Switch, Sort Order, Default Ascending, with Parameter Descending
+
+    .PARAMETER Dosview
+    Switch, Dosview, Default True
 
     .PARAMETER Page
     Pagenumber
@@ -36,8 +39,12 @@ function Get-MultimeterMacProtocol
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterMacProtocol -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get MAC Protocols from Allegro Multimeter using provided credential
+    Get-MultimeterTcpInvalidConnection -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get TCP Server with invalid connections from Allegro Multimeter using provided credential
+
+    .EXAMPLE
+    (Get-MultimeterTcpInvalidConnection -Hostname 'allegro-mm-6cb3' -Reverse -Page 0 -Count 3).displayedItems
+    #Get TCP-Statistics for the 3 IP Addresses with the highest Invalid connections
 
     .NOTES
     n.a.
@@ -59,18 +66,21 @@ function Get-MultimeterMacProtocol
         [string]
         $Details = 'full',
 
-        [ValidateSet('protocol', 'bps', 'pps', 'bytes', 'packets')]
+        [ValidateSet('invalidfactortcp', 'invalidconnections', 'validconnections')]
         [string]
-        $SortBy = 'protocol',
+        $SortBy = 'invalidconnections',
 
         [switch]
         $Reverse,
+
+        [switch]
+        $Dosview,
 
         [int]
         $Page = 0,
 
         [int]
-        $Count = 5,
+        $Count = 10,
 
         [int]
         $Timespan = 60,
@@ -86,9 +96,10 @@ function Get-MultimeterMacProtocol
     {
         Invoke-MultimeterTrustSelfSignedCertificate
         $ReverseString = Get-MultimeterSwitchString -Value $Reverse
-        $BaseURL = ('https://{0}/API/stats/modules/mac_protocols' -f $HostName)
-        $SessionURL = ('{0}/mac_protocols_paged?sort={1}&reverse={2}&page={3}&count={4}&timespan={5}&values={6}' -f $BaseURL,
-            $SortBy, $ReverseString, $Page, $Count, $Timespan, $Values)
+        $BaseURL = ('https://{0}/API/stats/modules/ip' -f $HostName)
+        $DosviewString = Get-MultimeterSwitchString -Value $Dosview
+        $SessionURL = ('{0}/ips_paged?sort={1}&reverse={2}&page={3}&count={4}&values={5}&dosview={6}&timespan={7}' -f $BaseURL,
+            $SortBy, $ReverseString, $Page, $Count, $Values, $DosviewString , $Timespan)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end

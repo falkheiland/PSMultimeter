@@ -1,17 +1,20 @@
-function Get-MultimeterInterfaceStatistic
+function Get-MultimeterIcmp
 {
     <#
     .SYNOPSIS
-    Get interface statistics of the Allegro Multimeter via RESTAPI.
+    Get ICMP Statistics for the Allegro Multimeter via RESTAPI.
 
     .DESCRIPTION
-    Get interface statistics of the Allegro Multimeter via RESTAPI.
+    Get ICMP Statistics for the Allegro Multimeter via RESTAPI.
 
     .PARAMETER HostName
     Ip-Address or Hostname of the Allegro Multimeter
 
     .PARAMETER Credential
     Credentials for the Allegro Multimeter
+
+    .PARAMETER Details
+    Details ('full')
 
     .PARAMETER Timespan
     Timespan
@@ -21,12 +24,8 @@ function Get-MultimeterInterfaceStatistic
 
     .EXAMPLE
     $Credential = Get-Credential -Message 'Enter your credentials'
-    Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3' -Credential $Credential
-    #Ask for credential then get interface statistics from Allegro Multimeter using provided credential
-
-    .EXAMPLE
-    ((Get-MultimeterInterfaceStatistic -Hostname 'allegro-mm-6cb3').interfaces).where{$_.linkDetected -eq 'True'}
-    #Get interface statistics from Allegro Multimeter for interfaces that are connected
+    Get-MultimeterIcmp -Hostname 'allegro-mm-6cb3' -Credential $Credential
+    #Ask for credential then get ICMP Distribution information from ICMP-Statistics from Allegro Multimeter using provided credential
 
     .NOTES
     n.a.
@@ -44,11 +43,15 @@ function Get-MultimeterInterfaceStatistic
         [System.Management.Automation.Credential()]
         $Credential = (Get-Credential -Message 'Enter your credentials'),
 
+        [ValidateSet('full')]
+        [string]
+        $Details = 'full',
+
         [int]
         $Timespan = 60,
 
         [int]
-        $Values = 30
+        $Values = 60
     )
 
     begin
@@ -57,8 +60,9 @@ function Get-MultimeterInterfaceStatistic
     process
     {
         Invoke-MultimeterTrustSelfSignedCertificate
-        $BaseURL = ('https://{0}/API/stats/interfaces' -f $HostName)
-        $SessionURL = ('{0}?timespan={1}&values={2}' -f $BaseURL, $Timespan, $Values)
+        $BaseURL = ('https://{0}/API/stats/modules/icmp' -f $HostName)
+        $SessionURL = ('{0}?detail={1}&timespan={2}&values={3}' -f $BaseURL,
+            $Details, $Timespan, $Values)
         Invoke-MultimeterRestMethod -Credential $Credential -SessionURL $SessionURL -Method 'Get'
     }
     end
