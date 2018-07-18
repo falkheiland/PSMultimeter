@@ -12,7 +12,7 @@
     RootModule        = 'PSMultimeter.psm1'
 
     # Die Versionsnummer dieses Moduls
-    ModuleVersion     = '0.1.5'
+    ModuleVersion     = '0.2.0'
 
     # Unterstützte PSEditions
     # CompatiblePSEditions = @()
